@@ -30,7 +30,7 @@ https://www.udemy.com/criando-aplicacoes-web-com-o-framework-php-codeigniter-3/l
 
 ## <a name="parte2">Seção: 2 Iniciando os trabalhos com o CodeIgniter 3</a>
 
-#### 8. Ativando a reescrita de URL 
+#### Seção 2, aula 8. Ativando a reescrita de URL 
 - .htaccess
 ```apacheconfig
 <IfModule mod_rewrite.c>
@@ -41,7 +41,7 @@ https://www.udemy.com/criando-aplicacoes-web-com-o-framework-php-codeigniter-3/l
 </IfModule>
 ```
 
-#### 9. Configurando os arquivos Config, Routes e Autoload
+#### Seção 2, aula 9. Configurando os arquivos Config, Routes e Autoload
 - application/config/config.php
 ```php
 $config['base_url'] = 'http://localhost/workspace-criando-aplicacoes-web-com-o-framework-php-codeigniter-3/';
@@ -51,7 +51,40 @@ $config['base_url'] = 'http://localhost/workspace-criando-aplicacoes-web-com-o-f
 ```php
 $autoload['helper'] = array('url','form','html');
 ```
+####  Seção 2, aula 10 - Criando e acessando Métodos nos Controladores 
 
+- application/controllers/Olamundo.php
+```php
+<?php defined('BASEPATH') OR exit('No direct script access allowed');
+class Olamundo extends CI_Controller
+{
+    public function index()
+    {
+        $dados['mensagem'] = 'ola mundo';
+        $this->load->view('olamundo', $dados);
+        //http://localhost/workspace-criando-aplicacoes-web-com-o-framework-php-codeigniter-3/
+    }
+
+    public function teste()
+    {
+        $dados['mensagem'] = 'testando';
+        $this->load->view('olamundo', $dados);
+        //http://localhost/workspace-criando-aplicacoes-web-com-o-framework-php-codeigniter-3/olamundo/teste
+    }
+}
+```
+- application/views/olamundo.php
+```php
+<!DOCTYPE html>
+<html>
+<head>
+	<title><?php echo $mensagem?></title>
+</head>
+<body>
+<h1><?php echo $mensagem?></h1>
+</body>
+</html>
+```
 
 
 
