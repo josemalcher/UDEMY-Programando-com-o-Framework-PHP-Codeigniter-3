@@ -12,4 +12,9 @@ class Olamundo extends CI_Controller
         $dados['mensagem'] = 'testando';
         $this->load->view('olamundo', $dados);
     }
+    public function testeDb(){
+        $dados['mensagem'] = $this->db->get('postagens')->result();
+        echo "<pre>";
+        print_r($dados);
+    }
 }

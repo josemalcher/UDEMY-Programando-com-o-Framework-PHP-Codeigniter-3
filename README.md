@@ -86,6 +86,31 @@ class Olamundo extends CI_Controller
 </html>
 ```
 
+#### Seção 2, aula 11 Configurando e testando a conexão com o Banco de Dados
+
+- application/config/autoload.php
+```php
+$autoload['libraries'] = array('database');
+```
+
+- application/config/database.php
+```php
+	'hostname' => 'localhost',
+	'username' => 'root',
+	'password' => '',
+	'database' => 'udemy_ci_blog',
+```
+
+- application/controllers/Olamundo.php
+```php
+    public function testeDb(){
+        $dados['mensagem'] = $this->db->get('postagens')->result();
+        echo "<pre>";
+        print_r($dados);
+    }
+//http://localhost/workspace-criando-aplicacoes-web-com-o-framework-php-codeigniter-3/olamundo/testedb    
+```
+
 
 
 [Voltar ao Índice](#indice)
