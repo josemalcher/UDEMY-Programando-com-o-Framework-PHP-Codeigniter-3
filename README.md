@@ -111,6 +111,41 @@ $autoload['libraries'] = array('database');
 //http://localhost/workspace-criando-aplicacoes-web-com-o-framework-php-codeigniter-3/olamundo/testedb    
 ```
 
+#### Seção 2, 12. Realizando a tradução do Framework
+
+https://github.com/CIBr/CodeIgniter-Portuguese-BR
+
+- application/config/config.php
+```php
+    $config['language']	= 'portuguese-brazilian';
+```
+
+#### Seção 2, 13. Criando um Helper para formatar a URL
+
+- application/helpers/funcoes_helper.php
+```php
+<?php
+defined('BASEPATH') OR exit('No direct script access allowed');
+function limpar($string){
+    $table = array(
+        '/'=>'', '('=>'', ')'=>'',
+    );
+    // Traduz os caracteres em $string, baseado no vetor $table
+    $string = strtr($string, $table);
+    $string= preg_replace('/[,.;:`´^~\'"]/', null, iconv('UTF-8','ASCII//TRANSLIT',$string));
+    $string= strtolower($string);
+    $string= str_replace(" ", "-", $string);
+    $string= str_replace("---", "-", $string);
+    return $string;
+}
+```
+
+- application/config/autoload.php
+```php
+$autoload['helper'] = array('url','form','html','funcoes');
+
+```
+
 
 
 [Voltar ao Índice](#indice)
