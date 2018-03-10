@@ -18,12 +18,41 @@ https://www.udemy.com/criando-aplicacoes-web-com-o-framework-php-codeigniter-3/l
 
 ## <a name="parte1">Seção: 1 Introdução</a>
 
+- https://www.devmedia.com.br/introducao-ao-framework-php-codeigniter/27346
+- https://tableless.com.br/porque-codeigniter-ainda-e-uma-boa-opcao/
+- http://www.rafaelwendel.com/2013/01/introducao-ao-codeigniter-framework/
+- http://www.universidadecodeigniter.com.br/
+
 
 [Voltar ao Índice](#indice)
 
 ---
 
 ## <a name="parte2">Seção: 2 Iniciando os trabalhos com o CodeIgniter 3</a>
+
+#### 8. Ativando a reescrita de URL 
+- .htaccess
+```apacheconfig
+<IfModule mod_rewrite.c>
+   RewriteEngine On
+   RewriteCond %{REQUEST_FILENAME} !-f
+   RewriteCond %{REQUEST_FILENAME} !-d
+   RewriteRule ^(.*)$ index.php/$1 [L]
+</IfModule>
+```
+
+#### 9. Configurando os arquivos Config, Routes e Autoload
+- application/config/config.php
+```php
+$config['base_url'] = 'http://localhost/workspace-criando-aplicacoes-web-com-o-framework-php-codeigniter-3/';
+
+```
+- application/config/autoload.php
+```php
+$autoload['helper'] = array('url','form','html');
+```
+
+
 
 
 [Voltar ao Índice](#indice)
