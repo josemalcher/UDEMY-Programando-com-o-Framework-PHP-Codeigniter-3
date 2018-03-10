@@ -76,3 +76,4 @@ application/logs/*
 .idea/php.xml
 .idea/workspace-criando-aplicacoes-web-com-o-framework-php-codeigniter-3.iml
 .idea/workspace.xml
+/nbproject/private/
