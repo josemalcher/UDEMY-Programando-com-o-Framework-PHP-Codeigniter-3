@@ -146,6 +146,11 @@ $autoload['helper'] = array('url','form','html','funcoes');
 
 ```
 
+#### Seção 2, 14. Preparando o template master do Front-end do Blog
+
+- application/views/frontend/template varios arquivos para o front-end do blog
+
+
 
 
 [Voltar ao Índice](#indice)
