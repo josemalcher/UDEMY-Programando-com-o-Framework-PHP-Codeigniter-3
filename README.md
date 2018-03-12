@@ -863,6 +863,117 @@ class Usuarios_model extends CI_Model {
 $route['autor/(:num)/(:any)'] ='sobrenos/autores/$1/$2';
 ```
 
+#### 27. Criando a página Sobre Nós
+
+- application/views/frontend/template/header.php
+```php
+          <a href="<?=base_url('sobrenos')?>">Sobre Nós</a>
+```
+- application/controllers/Sobrenos.php
+```php
+ public function __construct()
+    {
+        parent::__construct();
+        $this->load->model('categorias_model','modelcategorias');
+        $this->load->model('usuarios_model', 'modelusuarios');
+        $this->categorias = $this->modelcategorias->listar_categorias();
+    }
+
+    public function index()
+    {
+        $dados['categorias'] = $this->categorias;
+        $dados['autores'] = $this->modelusuarios->listar_autores();
+
+        //Dados a serem enviados para o Cabeçalho
+        $dados['titulo'] = 'Sobre Nós';
+        $dados['subtitulo'] = 'Conheça nossa Equipe';
+
+        $this->load->view('frontend/template/html-header', $dados);
+        $this->load->view('frontend/template/header');
+        $this->load->view('frontend/sobrenos');
+        $this->load->view('frontend/template/aside');
+        $this->load->view('frontend/template/footer');
+        $this->load->view('frontend/template/html-footer');
+    }
+```
+- application/models/Usuarios_model.php
+```php
+
+    public function listar_autores(){
+        $this->db->select('id, nome, img');
+        $this->db->from('usuario');
+        $this->db->order_by('nome','ASC');
+        return $this->db->get()->result();
+    }
+```
+- application/views/frontend/sobrenos.php
+```php
+<!-- Page Content -->
+<div class="container">
+    <div class="row">
+
+        <!-- Blog Entries Column -->
+        <div class="col-md-8">
+
+            <h1 class="page-header">
+                <?php echo $titulo; ?>
+                <small><?php
+                    if ($subtitulo != '') {
+                        echo $subtitulo;
+                    } else {
+                        foreach ($subtitulodb as $dbtitulo) {
+                            echo $dbtitulo->titulo;
+                        }
+                    }
+                    ?></small>
+            </h1>
+
+
+            <div class="col-md-12 ">
+
+                <p>Lorem ipsum dolor sit amet, consectetur adipisicing elit, sed do eiusmod
+                    tempor incididunt ut labore et dolore magna aliqua. Ut enim ad minim veniam,
+                    quis nostrud exercitation ullamco laboris nisi ut aliquip ex ea commodo
+                    consequat. Duis aute irure dolor in reprehenderit in voluptate velit esse
+                    cillum dolore eu fugiat nulla pariatur. Excepteur sint occaecat cupidatat non
+                    proident, sunt in culpa qui officia deserunt mollit anim id est laborum.</p>
+                <p>Lorem ipsum dolor sit amet, consectetur adipisicing elit, sed do eiusmod
+                    tempor incididunt ut labore et dolore magna aliqua. Ut enim ad minim veniam,
+                    quis nostrud exercitation ullamco laboris nisi ut aliquip ex ea commodo
+                    consequat. Duis aute irure dolor in reprehenderit in voluptate velit esse
+                    cillum dolore eu fugiat nulla pariatur. Excepteur sint occaecat cupidatat non
+                    proident, sunt in culpa qui officia deserunt mollit anim id est laborum.</p>
+                <p>Lorem ipsum dolor sit amet, consectetur adipisicing elit, sed do eiusmod
+                    tempor incididunt ut labore et dolore magna aliqua. Ut enim ad minim veniam,
+                    quis nostrud exercitation ullamco laboris nisi ut aliquip ex ea commodo
+                    consequat. Duis aute irure dolor in reprehenderit in voluptate velit esse
+                    cillum dolore eu fugiat nulla pariatur. Excepteur sint occaecat cupidatat non
+                    proident, sunt in culpa qui officia deserunt mollit anim id est laborum.</p>
+
+            </div>
+            <br>
+            <h1 class="page-header">
+                Nossos autores
+            </h1>
+            <div class="col-md-12 row">
+                <?php
+                foreach ($autores as $autor) {
+                    ?>
+                    <div class="col-md-4 col-xs-6">
+                        <img class="img-responsive img-circle" src="http://placehold.it/200x200" alt="">
+                        <h4 class="text-center">
+                            <a href="<?php echo base_url('autor/'. $autor->id .'/'.limpar($autor->nome)); ?>"><?php echo $autor->nome ?></a>
+                        </h4>
+                    </div>
+                    <?php
+                }
+                ?>
+            </div>
+
+        </div>
+```
+
+
 
 [Voltar ao Índice](#indice)
 

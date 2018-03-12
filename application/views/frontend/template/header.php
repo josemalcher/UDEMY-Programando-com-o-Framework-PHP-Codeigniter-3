@@ -31,7 +31,7 @@
                     </ul>
                 </li>
                 <li>
-                    <a href="#">Sobre Nós</a>
+                    <a href="<?=base_url('sobrenos')?>">Sobre Nós</a>
                 </li>
                 <li>
                     <a href="#">Contato</a>

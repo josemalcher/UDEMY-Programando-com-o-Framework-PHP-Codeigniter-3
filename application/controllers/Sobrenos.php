@@ -6,24 +6,22 @@ class Sobrenos extends CI_Controller
     {
         parent::__construct();
         $this->load->model('categorias_model','modelcategorias');
+        $this->load->model('usuarios_model', 'modelusuarios');
         $this->categorias = $this->modelcategorias->listar_categorias();
     }
 
-    public function index($id, $slug = null)
+    public function index()
     {
         $dados['categorias'] = $this->categorias;
-
-        $this->load->model('publicacoes_model','modelpublicacoes');
-        $dados['postagem'] = $this->modelpublicacoes->categoria_pub($id);
+        $dados['autores'] = $this->modelusuarios->listar_autores();
 
         //Dados a serem enviados para o Cabeçalho
-        $dados['titulo'] = 'Categorias';
-        $dados['subtitulo'] = '';
-        $dados['subtitulodb'] = $this->modelcategorias->listar_titulo($id);
+        $dados['titulo'] = 'Sobre Nós';
+        $dados['subtitulo'] = 'Conheça nossa Equipe';
 
         $this->load->view('frontend/template/html-header', $dados);
         $this->load->view('frontend/template/header');
-        $this->load->view('frontend/categoria');
+        $this->load->view('frontend/sobrenos');
         $this->load->view('frontend/template/aside');
         $this->load->view('frontend/template/footer');
         $this->load->view('frontend/template/html-footer');
@@ -32,7 +30,6 @@ class Sobrenos extends CI_Controller
     {
         $dados['categorias'] = $this->categorias;
 
-        $this->load->model('usuarios_model', 'modelusuarios');
         $dados['autores'] = $this->modelusuarios->listar_autor($id);
 
         //Dados a serem enviados para o Cabeçalho
