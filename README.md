@@ -586,7 +586,7 @@ class Categorias extends CI_Controller
     }
 ```
 
-#### 23. Criando a página categorias e a primeira rota personalizada
+#### 24. Modificando o título e cabeçalho da página de acordo com a categoria
 
 - application/models/Categorias_model.php
 ```php
@@ -636,6 +636,99 @@ class Categorias extends CI_Controller
         ?>
     </title>
 ```
+
+#### 25. Criando e configurando a página de publicações
+
+- application/controllers/Postagens.php
+```php
+<?php defined('BASEPATH') OR exit('No direct script access allowed');
+
+class Postagens extends CI_Controller
+{
+    public function __construct()
+    {
+        parent::__construct();
+        $this->load->model('categorias_model','modelcategorias');
+        $this->categorias = $this->modelcategorias->listar_categorias();
+    }
+
+    public function index($id, $slug = null)
+    {
+        $dados['categorias'] = $this->categorias;
+
+        $this->load->model('publicacoes_model','modelpublicacoes');
+        $dados['postagem'] = $this->modelpublicacoes->publicacao($id);
+
+        //Dados a serem enviados para o Cabeçalho
+        $dados['titulo'] = 'Publicação';
+        $dados['subtitulo'] = '';
+        $dados['subtitulodb'] = $this->modelpublicacoes->listar_titulo($id);
+
+        $this->load->view('frontend/template/html-header', $dados);
+        $this->load->view('frontend/template/header');
+        $this->load->view('frontend/publicacao');
+        $this->load->view('frontend/template/aside');
+        $this->load->view('frontend/template/footer');
+        $this->load->view('frontend/template/html-footer');
+    }
+}
+```
+
+- application/models/Publicacoes_model.php
+
+```php
+public function publicacao($id)
+    {
+        $this->db->select('usuario.id as idautor, usuario.nome, 
+                           postagens.id, postagens.titulo, 
+                           postagens.subtitulo, postagens.user, 
+                           postagens.data, postagens.img,
+                           postagens.categoria, postagens.conteudo');
+        $this->db->from('postagens');
+        $this->db->join('usuario', 'usuario.id = postagens.user');
+        $this->db->where('postagens.id = '.$id);
+        return $this->db->get()->result();
+    }
+
+    public function listar_titulo($id){
+        $this->db->select('id','titulo');
+        $this->db->from('postagens');
+        $this->db->where('id ='.$id);
+        return $this->db->get()->result();
+    }
+```
+- application/views/frontend/publicacao.php
+
+```php
+<!-- Page Content -->
+<div class="container">
+    <div class="row">
+        <!-- Blog Entries Column -->
+        <div class="col-md-8">
+            <?php
+            foreach ($postagem as $destaque) {
+                ?>
+                <h1>
+                    <?php echo $destaque->titulo; ?>
+                </h1>
+                <p class="lead">
+                    por <a href="<?php echo base_url('autor/'. $destaque->idautor .'/'.limpar($destaque->nome)); ?>"><?php echo $destaque->nome ?></a>
+                </p>
+                <p><span class="glyphicon glyphicon-time"></span> <?php echo postadoem($destaque->data); ?></p>
+                <hr>
+                <p><i><?php echo $destaque->subtitulo ?></i></p>
+                <img class="img-responsive" src="http://placehold.it/900x300" alt="">
+                <hr>
+                <p><?php echo $destaque->conteudo ?></p>
+                <hr>
+                <?php
+            }
+            ?>
+        </div>
+```
+
+
+
 
 [Voltar ao Índice](#indice)
 
