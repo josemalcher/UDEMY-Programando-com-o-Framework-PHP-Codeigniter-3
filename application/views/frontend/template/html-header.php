@@ -6,7 +6,18 @@
     <meta name="viewport" content="width=device-width, initial-scale=1">
     <meta name="description" content="Site de Estudos em Codeigniter">
     <meta name="author" content="José Stélio Malcher Jr">
-    <title><?php echo $titulo. ' - '. $subtitulo; ?></title>
+    <title><?php echo $titulo . ' - ' ?>
+        <?php
+        if ($subtitulo != '') {
+            echo $subtitulo;
+        } else {
+            foreach ($subtitulodb as $dbtitulo) {
+                echo $dbtitulo->titulo;
+            }
+        }
+
+        ?>
+    </title>
     <!-- Bootstrap Core CSS -->
     <link href="<?php echo base_url('assets/frontend/css/bootstrap.min.css') ?>" rel="stylesheet">
     <!-- Custom CSS -->

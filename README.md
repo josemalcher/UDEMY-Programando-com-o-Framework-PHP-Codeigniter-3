@@ -586,7 +586,56 @@ class Categorias extends CI_Controller
     }
 ```
 
+#### 23. Criando a página categorias e a primeira rota personalizada
 
+- application/models/Categorias_model.php
+```php
+ public function listar_titulo($id){
+        $this->db->from('categoria');
+        $this->db->where('id =',$id);
+        return $this->db->get()->result();
+    }
+```
+
+- application/controllers/Categorias.php
+```php
+         $dados['subtitulodb'] = $this->modelcategorias->listar_titulo($id);
+```
+
+- application/views/frontend/categoria.php
+
+```php
+<h1 class="page-header">
+                <?php echo $titulo; ?>
+                <small><?php
+                        if($subtitulo != ''){
+                            echo $subtitulo;
+                        }else{
+                            foreach ($subtitulodb as $dbtitulo){
+                                echo $dbtitulo->titulo;
+                            }
+                        }
+
+                    ?></small>
+            </h1>
+```
+
+- application/views/frontend/template/html-header.php
+
+```php
+<title><?php echo $titulo . ' - ' ?>
+        <?php
+        if ($subtitulo != '') {
+            echo $subtitulo;
+        } else {
+            foreach ($subtitulodb as $dbtitulo) {
+                echo $dbtitulo->titulo;
+            }
+        }
+
+        ?>
+    </title>
+```
 
 [Voltar ao Índice](#indice)
 
