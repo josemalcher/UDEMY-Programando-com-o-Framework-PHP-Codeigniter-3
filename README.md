@@ -254,6 +254,99 @@ foreach ($categorias as $categoria) {
 ?>
 ```
 
+####  19. Criando a área de destaque de publicações na Home de nosso Blog
+
+- application/models/Publicacoes_model.php
+```php
+<?php defined('BASEPATH') OR exit('No direct script access allowed');
+
+class Publicacoes_model extends CI_Model {
+
+    public $id;
+    public $categoria;
+    public $titulo;
+    public $subtitulo;
+    public $conteuto;
+    public $data;
+    public $img;
+    public $user;
+
+    public function __construct()
+    {
+        parent::__construct();
+    }
+
+    public function destaques_home(){
+        $this->db->limit(4);
+        $this->db->order_by('data','DESC');
+        return $this->db->get('postagens')->result();
+    }
+
+}
+```
+
+- application/controllers/Home.php
+
+```php
+<?php defined('BASEPATH') OR exit('No direct script access allowed');
+
+class Home extends CI_Controller
+{
+    public function __construct()
+    {
+        parent::__construct();
+        $this->load->model('categorias_model','modelcategorias');
+        $this->categorias = $this->modelcategorias->listar_categorias();
+    }
+
+    public function index()
+    {
+        $dados['categorias'] = $this->categorias;
+
+        $this->load->model('publicacoes_model','modelpublicacoes');
+        $dados['postagem'] = $this->modelpublicacoes->destaques_home();
+
+        $this->load->view('frontend/template/html-header', $dados);
+        $this->load->view('frontend/template/header');
+        $this->load->view('frontend/home');
+        $this->load->view('frontend/template/aside');
+        $this->load->view('frontend/template/footer');
+        $this->load->view('frontend/template/html-footer');
+    }
+
+
+}
+```
+
+- application/views/frontend/home.php
+
+```php
+<?php
+            foreach ($postagem as $destaque) {
+                ?>
+                <h2>
+                    <a href="<?php echo base_url('postagem/' . $destaque->id . '/' . limpar($destaque->titulo)) ?>"><?php echo $destaque->titulo; ?></a>
+                </h2>
+                <p class="lead">
+                    por <a href="index.php">Start Bootstrap</a>
+                </p>
+                <p><span class="glyphicon glyphicon-time"></span> Postado em 25 de Janeiro de 2017 10:00</p>
+                <hr>
+                <img class="img-responsive" src="http://placehold.it/900x300" alt="">
+                <hr>
+                <p><?php echo $destaque->subtitulo ?></p>
+                <a class="btn btn-primary"
+                   href="<?php echo base_url('postagem/' . $destaque->id . '/' . limpar($destaque->titulo)) ?>">Leia
+                    mais <span
+                            class="glyphicon glyphicon-chevron-right"></span></a>
+
+                <hr>
+                <?php
+            }
+            ?>
+```
+
+
 
 [Voltar ao Índice](#indice)
 
