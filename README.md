@@ -480,6 +480,114 @@ class Publicacoes_model extends CI_Model {
     <title><?php echo $titulo. ' - '. $subtitulo; ?></title>
 ```
 
+#### 23. Criando a página categorias e a primeira rota personalizada
+
+- application/config/routes.php
+
+```php
+$route['categoria/(:num)/(:any)'] ='categorias/index/$1/$2' ;
+```
+
+- application/controllers/Categorias.php
+
+```php
+<?php defined('BASEPATH') OR exit('No direct script access allowed');
+
+class Categorias extends CI_Controller
+{
+    public function __construct()
+    {
+        parent::__construct();
+        $this->load->model('categorias_model','modelcategorias');
+        $this->categorias = $this->modelcategorias->listar_categorias();
+    }
+
+    public function index($id, $slug = null)
+    {
+        $dados['categorias'] = $this->categorias;
+
+        $this->load->model('publicacoes_model','modelpublicacoes');
+        $dados['postagem'] = $this->modelpublicacoes->categoria_pub($id);
+
+        //Dados a serem enviados para o Cabeçalho
+        $dados['titulo'] = 'Categorias';
+        $dados['subtitulo'] = 'Postagens Recentes';
+
+        $this->load->view('frontend/template/html-header', $dados);
+        $this->load->view('frontend/template/header');
+        $this->load->view('frontend/categoria');
+        $this->load->view('frontend/template/aside');
+        $this->load->view('frontend/template/footer');
+        $this->load->view('frontend/template/html-footer');
+    }
+}
+```
+
+- application/views/frontend/categoria.php
+
+```php
+<!-- Page Content -->
+<div class="container">
+
+    <div class="row">
+
+        <!-- Blog Entries Column -->
+        <div class="col-md-8">
+
+            <h1 class="page-header">
+                <?php echo $titulo; ?>
+                <small><?php echo $subtitulo; ?></small>
+            </h1>
+
+            <?php
+            foreach ($postagem as $destaque) {
+                ?>
+                <h2>
+                    <a href="<?php echo base_url('postagem/' . $destaque->id . '/' . limpar($destaque->titulo)); ?>"><?php echo $destaque->titulo; ?></a>
+                </h2>
+                <p class="lead">
+                    por <a href="<?php echo base_url('autor/'. $destaque->idautor .'/'.limpar($destaque->nome)); ?>"><?php echo $destaque->nome ?></a>
+                </p>
+                <p><span class="glyphicon glyphicon-time"></span> <?php echo postadoem($destaque->data); ?></p>
+                <hr>
+                <img class="img-responsive" src="http://placehold.it/900x300" alt="">
+                <hr>
+                <p><?php echo $destaque->subtitulo ?></p>
+                <a class="btn btn-primary"
+                   href="<?php echo base_url('postagem/' . $destaque->id . '/' . limpar($destaque->titulo)) ?>">Leia
+                    mais <span
+                            class="glyphicon glyphicon-chevron-right"></span></a>
+
+                <hr>
+                <?php
+            }
+            ?>
+
+
+        </div>
+
+```
+
+- application/models/Publicacoes_model.php
+
+```php
+ public function categoria_pub($id)
+    {
+        $this->db->select('usuario.id as idautor, usuario.nome, 
+                           postagens.id, postagens.titulo, 
+                           postagens.subtitulo, postagens.user, 
+                           postagens.data, postagens.img,
+                           postagens.categoria');
+        $this->db->from('postagens');
+        $this->db->join('usuario', 'usuario.id = postagens.user');
+        $this->db->where('postagens.categoria = '.$id);
+        $this->db->order_by('postagens.data', 'DESC');
+        return $this->db->get()->result();
+    }
+```
+
+
+
 [Voltar ao Índice](#indice)
 
 ---
