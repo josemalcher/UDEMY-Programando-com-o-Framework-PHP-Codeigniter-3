@@ -237,6 +237,22 @@ class Home extends CI_Controller
 }
 ```
 
+#### 18. Exibindo os primeiros resultados do Model na View
+
+- application/views/frontend/template/aside.php
+- application/views/frontend/template/header.php
+
+```php
+<?php
+foreach ($categorias as $categoria) {
+?>
+    <li>
+    <a href="<?php echo base_url('categoria/' . $categoria->id . '/' . limpar($categoria->titulo)) ?>"><?php echo $categoria->titulo ?></a>
+    </li>
+    <?php
+}
+?>
+```
 
 
 [Voltar ao Índice](#indice)
