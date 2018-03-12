@@ -456,6 +456,29 @@ class Publicacoes_model extends CI_Model {
          </p>
 ```
 
+#### 22. Carregando o título e o cabeçalho das páginas de forma dinâmica
+
+- application/controllers/Home.php
+
+```php
+       //Dados a serem enviados para o Cabeçalho
+        $dados['titulo'] = 'Página Inicial';
+        $dados['subtitulo'] = 'Postagens Recentes';
+```
+
+-application/views/frontend/home.php
+
+```php
+            <h1 class="page-header">
+                <?php echo $titulo; ?>
+                <small><?php echo $subtitulo; ?></small>
+            </h1>
+```
+-application/views/frontend/template/html-header.php
+
+```php
+    <title><?php echo $titulo. ' - '. $subtitulo; ?></title>
+```
 
 [Voltar ao Índice](#indice)
 
