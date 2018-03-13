@@ -1332,6 +1332,104 @@ class Categoria extends CI_Controller
     }
 ```
 
+#### 33. Atualizando as Categorias de Forma Segura
+
+- application/views/backend/categoria.php
+```php
+    $alterar = anchor(base_url('admin/categoria/alterar/'.md5($categoria->id)), '<i class="fa fa-refresh fa-fw"></i> Alterar');
+```
+
+- application/views/backend/alterar-categoria.php
+```php
+<div class="col-lg-6">
+            <div class="panel panel-default">
+                <div class="panel-heading">
+                    <?php echo 'Alterar ' . $subtitulo; ?>
+                </div>
+                <div class="panel-body">
+                    <div class="row">
+                        <div class="col-lg-12">
+                            <?php
+                            echo validation_errors('<div class="alert alert-danger">', '</div>');
+                            echo form_open('admin/categoria/salvar_alteracoes');
+                            foreach ($categorias as $categoria) {
+                                ?>
+                                <div class="form-group">
+                                    <label id="txt-categoria">Nome da Categoria</label>
+                                    <input type="text" name="txt-categoria" class="form-control"
+                                           placeholder="Digite o nome da categoria" value="<?php echo $categoria->titulo ?>">
+                                </div>
+                                <input type="hidden" name="txt-id" id="txt-id"  value="<?php echo $categoria->id ?>" >
+                                <button type="submit" class="btn btn-default">Atualizar</button>
+                                <?php
+                            }
+                            echo form_close();
+                            ?>
+                        </div>
+
+                    </div>
+                    <!-- /.row (nested) -->
+                </div>
+                <!-- /.panel-body -->
+            </div>
+            <!-- /.panel -->
+        </div>
+        <!-- /.col-lg-6 -->
+```
+
+- application/controllers/admin/Categoria.php
+```php
+
+    public function alterar($id)
+    {
+        $this->load->library('table');
+
+        $dados['categorias'] = $this->modelcategorias->listar_categoria($id);
+
+        //Dados a serem enviados para o Cabeçalho
+        $dados['titulo'] = 'Painel de Controle';
+        $dados['subtitulo'] = 'Categoria';
+
+        $this->load->view('backend/template/html-header', $dados);
+        $this->load->view('backend/template/template');
+        $this->load->view('backend/alterar-categoria');
+        $this->load->view('backend/template/html-footer');
+    }
+
+    public function salvar_alteracoes()
+    {
+        $this->load->library('form_validation'); //mesmas regras...
+        $this->form_validation->set_rules('txt-categoria', 'Nome da Categoria', 'required|min_length[3]|is_unique[categoria.titulo]');
+        if ($this->form_validation->run() == FALSE) {
+            $this->index();
+        } else {
+            $titulo = $this->input->post('txt-categoria');
+            $id = $this->input->post('txt-id');
+            if ($this->modelcategorias->alterar($titulo, $id)) {
+                redirect(base_url('admin/categoria'));
+            } else {
+                echo "Houve um erro!";
+            }
+        }
+    }
+```
+
+- application/models/Categorias_model.php
+```php
+public function listar_categoria($id)
+    {
+        $this->db->from('categoria');
+        $this->db->where('md5(id)', $id);
+        return $this->db->get()->result();
+    }
+
+    public function alterar($titulo, $id)
+    {
+        $dados['titulo'] = $titulo;
+        $this->db->where('id', $id);
+        return $this->db->update('categoria', $dados);
+    }
+```
 
 
 [Voltar ao Índice](#indice)
