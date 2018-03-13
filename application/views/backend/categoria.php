@@ -34,7 +34,19 @@
                     <div class="panel-body">
                         <div class="row">
                             <div class="col-lg-12">
-
+                                <?php
+                                    $this->table->set_heading("Nome da Categoria", "ALterar", "Excluir");
+                                        foreach ($categorias as $categoria){
+                                            $nomecat = $categoria->titulo;
+                                            $alterar = anchor(base_url('admin/categoria'), '<i class="fa fa-refresh fa-fw"></i> Alterar');
+                                            $excluir = anchor(base_url('admin/categoria'),'<i class="fa fa-remove fa-fw"></i> Excluir');
+                                            $this->table->add_row($nomecat, $alterar,$excluir);
+                                        }
+                                    $this->table->set_template(array(
+                                            'table_open' => '<table class="table table-striped">'
+                                    ));
+                                    echo $this->table->generate();
+                                ?>
                             </div>
 
                         </div>

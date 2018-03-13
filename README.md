@@ -1168,6 +1168,76 @@ class Categoria extends CI_Controller
     </form>-->
 ```
 
+#### 30. Listando as categorias com ajuda da Biblioteca Table do Framework
+
+- application/controllers/admin/Categoria.php
+```php
+<?php defined('BASEPATH') OR exit('No direct script access allowed');
+
+class Categoria extends CI_Controller
+{
+    public function __construct()
+    {
+        parent::__construct();
+        $this->load->model('categorias_model','modelcategorias');
+        $this->categorias = $this->modelcategorias->listar_categorias();
+    }
+
+    public function index()
+    {
+        $this->load->library('table');
+
+        $dados['categorias'] = $this->categorias;
+
+        //Dados a serem enviados para o Cabeçalho
+        $dados['titulo'] = 'Painel de Controle';
+        $dados['subtitulo'] = 'Categoria';
+
+        $this->load->view('backend/template/html-header', $dados);
+        $this->load->view('backend/template/template');
+        $this->load->view('backend/categoria');
+        $this->load->view('backend/template/html-footer');
+    }
+
+
+}
+```
+
+- application/views/backend/categoria.php
+```php
+            <div class="col-lg-6">
+                <div class="panel panel-default">
+                    <div class="panel-heading">
+                        <?php echo 'Alterar '.$subtitulo.' existente' ; ?>
+                    </div>
+                    <div class="panel-body">
+                        <div class="row">
+                            <div class="col-lg-12">
+                                <?php
+                                    $this->table->set_heading("Nome da Categoria", "ALterar", "Excluir");
+                                        foreach ($categorias as $categoria){
+                                            $nomecat = $categoria->titulo;
+                                            $alterar = anchor(base_url('admin/categoria'), '<i class="fa fa-refresh fa-fw"></i> Alterar');
+                                            $excluir = anchor(base_url('admin/categoria'),'<i class="fa fa-remove fa-fw"></i> Excluir');
+                                            $this->table->add_row($nomecat, $alterar,$excluir);
+                                        }
+                                    $this->table->set_template(array(
+                                            'table_open' => '<table class="table table-striped">'
+                                    ));
+                                    echo $this->table->generate();
+                                ?>
+                            </div>
+
+                        </div>
+                        <!-- /.row (nested) -->
+                    </div>
+                    <!-- /.panel-body -->
+                </div>
+                <!-- /.panel -->
+            </div>
+            <!-- /.col-lg-6 -->
+
+```
 
 
 [Voltar ao Índice](#indice)
