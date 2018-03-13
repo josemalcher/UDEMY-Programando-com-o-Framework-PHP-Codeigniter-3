@@ -1431,6 +1431,40 @@ public function listar_categoria($id)
     }
 ```
 
+#### 34. Criando e salvando sessões no banco de dados
+
+- application/config/autoload.php
+```php
+    $autoload['libraries'] = array('database','session');
+```
+
+- application/config/config.php
+```php
+$config['sess_driver'] = 'database'; //files | database
+$config['sess_cookie_name'] = 'ci_session';
+$config['sess_expiration'] = 0;// 3600 = 1h | 0 = Sessão expira ao fechar o navegador
+$config['sess_save_path'] = 'ci_session'; //default = NULL
+$config['sess_match_ip'] = TRUE; //grava ip de onde vem
+$config['sess_time_to_update'] = 300;
+$config['sess_regenerate_destroy'] = FALSE;
+```
+
+- SQL
+```sql
+CREATE TABLE IF NOT EXISTS `ci_session` (
+
+  `id` varchar(40) NOT NULL,
+  `ip_address` varchar(45) NOT NULL,
+  `timestamp` int(10) unsigned DEFAULT 0 NOT NULL,
+  `data` blob NOT NULL,
+  PRIMARY KEY (id),
+  KEY `ci_sessions_timestamp` (`timestamp`)
+);
+```
+
+
+
+
 
 [Voltar ao Índice](#indice)
 
