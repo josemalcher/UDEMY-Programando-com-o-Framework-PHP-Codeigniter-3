@@ -29,4 +29,11 @@ class Categorias_model extends CI_Model
         return $this->db->insert('categoria', $dados);
     }
 
+    public function excluir($id)
+    {
+        $this->db->where('md5(id)',$id);
+        return $this->db->delete('categoria');
+    }
+
+
 }

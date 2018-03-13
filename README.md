@@ -1304,6 +1304,35 @@ class Categoria extends CI_Controller
     }
 ```
 
+#### 32. Excluindo dados das Categorias de Forma Segura
+
+- application/views/backend/categoria.php
+```php
+             $excluir = anchor(base_url('admin/categoria/excluir/'.md5($categoria->id)), '<i class="fa fa-remove fa-fw"></i> Excluir');
+```
+
+- application/controllers/admin/Categoria.php
+```php
+  public function excluir($id)
+    {
+        if ($this->modelcategorias->excluir($id)) {
+            redirect(base_url('admin/categoria'));
+        } else {
+            echo "Houve um erro!";
+        }
+    }
+```
+
+- application/models/Categorias_model.php
+```php
+    public function excluir($id)
+    {
+        $this->db->where('md5(id)',$id);
+        return $this->db->delete('categoria');
+    }
+```
+
+
 
 [Voltar ao Índice](#indice)
 
