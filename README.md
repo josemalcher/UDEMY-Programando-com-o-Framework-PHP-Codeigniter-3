@@ -1239,6 +1239,71 @@ class Categoria extends CI_Controller
 
 ```
 
+#### 31. Adicionando novas Categorias na Base de Dados
+
+- application/views/backend/categoria.php
+```php
+<div class="col-lg-6">
+            <div class="panel panel-default">
+                <div class="panel-heading">
+                    <?php echo 'Adicionar nova ' . $subtitulo; ?>
+                </div>
+                <div class="panel-body">
+                    <div class="row">
+                        <div class="col-lg-12">
+                            <?php
+                            echo validation_errors('<div class="alert alert-danger">','</div>');
+                            echo form_open('admin/categoria/inserir');
+                            ?>
+                            <div class="form-group">
+                                <label id="txt-categoria">Nome da Categoria</label>
+                                <input type="text" name="txt-categoria" class="form-control"
+                                       placeholder="Digite o nome da categoria">
+                            </div>
+                            <button type="submit" class="btn btn-default">Cadastrar</button>
+                            <?php
+                            echo form_close();
+                            ?>
+                        </div>
+
+                    </div>
+                    <!-- /.row (nested) -->
+                </div>
+                <!-- /.panel-body -->
+            </div>
+            <!-- /.panel -->
+        </div>
+```
+
+- application/controllers/admin/Categoria.php
+```php
+
+    public function inserir(){
+        $this->load->library('form_validation');
+        $this->form_validation->set_rules('txt-categoria','Nome da Categoria', 'required|min_length[3]|is_unique[categoria.titulo]');
+        if($this->form_validation->run() == FALSE){
+            $this->index();
+        }else{
+            $titulo = $this->input->post('txt-categoria');
+            if($this->modelcategorias->adicionar($titulo)){
+                redirect(base_url('admin/categoria'));
+            }else{
+                echo "Houve um erro!";
+            }
+        }
+    }
+
+```
+
+- application/models/Categorias_model.php
+```php
+    public function adicionar($titulo)
+    {
+        $dados['titulo'] = $titulo;
+        return $this->db->insert('categoria', $dados);
+    }
+```
+
 
 [Voltar ao Índice](#indice)
 
