@@ -981,6 +981,77 @@ $route['autor/(:num)/(:any)'] ='sobrenos/autores/$1/$2';
 
 ## <a name="parte4">Seção: 4 Criando o Back-end do Blog</a>
 
+#### 28. Modelando as views na Home do Backend
+
+- application/controllers/admin/Home.php
+```php
+<?php defined('BASEPATH') OR exit('No direct script access allowed');
+
+class Home extends CI_Controller
+{
+    public function __construct()
+    {
+        parent::__construct();
+
+    }
+
+    public function index()
+    {
+
+        //Dados a serem enviados para o Cabeçalho
+        $dados['titulo'] = 'Painel de Controle';
+        $dados['subtitulo'] = 'Home';
+
+        $this->load->view('backend/template/html-header', $dados);
+        $this->load->view('backend/template/template');
+        $this->load->view('backend/home');
+        $this->load->view('backend/template/html-footer');
+    }
+
+
+}
+```
+
+-  application/views/backend/home.php
+```php
+<div id="page-wrapper">
+    <div class="row">
+        <div class="col-lg-12">
+            <h1 class="page-header"><?php echo $subtitulo ?></h1>
+        </div>
+        <!-- /.col-lg-12 -->
+    </div>
+    <!-- /.row -->
+    <div class="row">
+        <div class="col-lg-12">
+            <div class="panel panel-default">
+                <div class="panel-heading">
+                    <?php echo $subtitulo ?>
+                </div>
+                <div class="panel-body">
+                    <div class="row">
+                        <div class="col-lg-12">
+                            <h2>Bem vindo ao sistema</h2>
+                        </div>
+
+                    </div>
+                    <!-- /.row (nested) -->
+                </div>
+                <!-- /.panel-body -->
+            </div>
+            <!-- /.panel -->
+        </div>
+        <!-- /.col-lg-12 -->
+    </div>
+    <!-- /.row -->
+</div>
+<!-- /#page-wrapper -->
+
+</div>
+<!-- /#wrapper -->
+```
+
+
 
 [Voltar ao Índice](#indice)
 
