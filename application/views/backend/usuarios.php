@@ -21,27 +21,32 @@
                             ?>
                             <div class="form-group">
                                 <label id="txt-usuario">Nome do Usuário</label>
-                                <input type="text" name="txt-usuario" class="form-control" placeholder="Digite o nome do usuário">
+                                <input type="text" name="txt-usuario" class="form-control"
+                                       placeholder="Digite o nome do usuário"
+                                       value="<?php echo set_value('txt-usuario'); ?>">
                             </div>
                             <div class="form-group">
                                 <label id="txt-email">Email</label>
-                                <input type="text" name="txt-email" class="form-control" placeholder="Digite o Email">
+                                <input type="text" name="txt-email" class="form-control" placeholder="Digite o Email"
+                                       value="<?php echo set_value('txt-email'); ?>">
                             </div>
                             <div class="form-group">
-                                <label id="txt-usuario">Histórico</label>
-                                <textarea name="txt-historico" class="form-control" placeholder="Digite o histórico"></textarea>
+                                <label id="txt-historico">Histórico</label>
+                                <textarea name="txt-historico" id="txt-historico" class="form-control"><?php echo set_value('txt-historico'); ?></textarea>
                             </div>
                             <div class="form-group">
-                                <label id="txt-usuario">User</label>
-                                <input type="text" name="txt-user" class="form-control" placeholder="Digite o user do usuário">
+                                <label id="txt-user">User</label>
+                                <input type="text" name="txt-user" class="form-control"
+                                       placeholder="Digite o user do usuário"
+                                       value="<?php echo set_value('txt-user'); ?>">
                             </div>
                             <div class="form-group">
-                                <label id="txt-usuario">Senha</label>
-                                <input type="password" name="txt-senha" class="form-control" >
+                                <label id="txt-senha">Senha</label>
+                                <input type="password" name="txt-senha" class="form-control">
                             </div>
                             <div class="form-group">
-                                <label id="txt-usuario">Confirme a Senha</label>
-                                <input type="password" name="txt-senha" class="form-control" >
+                                <label id="txt-confir-senha">Confirme a Senha</label>
+                                <input type="password" name="txt-confir-senha" class="form-control">
                             </div>
                             <button type="submit" class="btn btn-default">Cadastrar</button>
                             <?php
@@ -70,8 +75,8 @@
                             foreach ($usuarios as $usuario) {
                                 $nomeuser = $usuario->nome;
                                 $fotouser = "Foto";
-                                $alterar = anchor(base_url('admin/usuario/alterar/' . md5($usuario->id)), '<i class="fa fa-refresh fa-fw"></i> Alterar');
-                                $excluir = anchor(base_url('admin/usuario/excluir/' . md5($usuario->id)), '<i class="fa fa-remove fa-fw"></i> Excluir');
+                                $alterar = anchor(base_url('admin/usuarios/alterar/' . md5($usuario->id)), '<i class="fa fa-refresh fa-fw"></i> Alterar');
+                                $excluir = anchor(base_url('admin/usuarios/excluir/' . md5($usuario->id)), '<i class="fa fa-remove fa-fw"></i> Excluir');
                                 $this->table->add_row($fotouser, $nomeuser, $alterar, $excluir);
                             }
                             $this->table->set_template(array(

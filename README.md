@@ -1815,6 +1815,78 @@ public function __construct()
     }
 ```
 
+#### 40. Inserindo, excluindo e criptografando o acesso do usuário
+
+- application/controllers/admin/Usuarios.php
+```php
+/************************************* ADMIN USUÁRIO *************************************/
+    public function inserir()
+    {
+        $this->load->model('usuarios_model', 'modelusuarios');
+        /* Proteção */
+        if (!$this->session->userdata('logado')) {
+            redirect(base_url('admin/login'));
+        }
+        /*regras de validação*/
+        $this->load->library('form_validation');
+        $this->form_validation->set_rules('txt-usuario', 'Nome do Usuário', 'required|min_length[3]');
+        $this->form_validation->set_rules('txt-email', 'Email', 'required|valid_email');
+        $this->form_validation->set_rules('txt-historico', 'Histórico', 'required|min_length[10]');
+        $this->form_validation->set_rules('txt-user', 'Nome de Usuário', 'required|min_length[3]|is_unique[usuario.user]');
+        $this->form_validation->set_rules('txt-senha', 'Senha', 'required|min_length[3]');
+        $this->form_validation->set_rules('txt-confir-senha', 'Senha de Confirmação', 'required|matches[txt-senha]');
+
+        if ($this->form_validation->run() == FALSE) {
+            $this->index();
+        } else {
+            $nome = $this->input->post('txt-usuario');
+            $email = $this->input->post('txt-email');
+            $historico = $this->input->post('txt-historico');
+            $user = $this->input->post('txt-user');
+            $senha = $this->input->post('txt-senha');
+            if ($this->modelusuarios->adicionar($nome, $email, $historico, $user, $senha)) {
+                redirect(base_url('admin/usuarios'));
+            } else {
+                "HOUVE UM ERRO AO INSERIR USUÁRIO!";
+            }
+        }
+    }
+
+    public function excluir($id)
+    {
+        $this->load->model('usuarios_model', 'modelusuarios');
+        /* Proteção */
+        if (!$this->session->userdata('logado')) {
+            redirect(base_url('admin/login'));
+        }
+        if ($this->modelusuarios->excluir($id)) {
+            redirect(base_url('admin/usuarios'));
+        } else {
+            "HOUVE UM ERRO AO EXCLUIR USUÁRIO!";
+        }
+    }
+```
+
+- application/models/Usuarios_model.php
+```php
+ /************************************* ADMIN USUÁRIO *************************************/
+
+    public function adicionar($nome, $email, $historico, $user, $senha)
+    {
+       $dados['nome'] = $nome;
+       $dados['email'] = $email;
+       $dados['historico'] = $historico;
+       $dados['user'] = $historico;
+       $dados['senha'] = md5($senha);
+       return $this->db->insert('usuario',$dados);
+    }
+    public function excluir($id){
+        $this->db->where('md5(id)', $id);
+        return $this->db->delete('usuario');
+    }
+```
+
+
 
 [Voltar ao Índice](#indice)
 

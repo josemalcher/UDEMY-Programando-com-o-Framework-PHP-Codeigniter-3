@@ -1,6 +1,7 @@
 <?php defined('BASEPATH') OR exit('No direct script access allowed');
 
-class Usuarios_model extends CI_Model {
+class Usuarios_model extends CI_Model
+{
 
     public $id;
     public $nome;
@@ -15,18 +16,36 @@ class Usuarios_model extends CI_Model {
         parent::__construct();
     }
 
-    public function listar_autor($id){
+    public function listar_autor($id)
+    {
         $this->db->select('id, nome,historico, img');
         $this->db->from('usuario');
-        $this->db->where('id =',$id);
+        $this->db->where('id =', $id);
         return $this->db->get()->result();
     }
 
-    public function listar_autores(){
+    public function listar_autores()
+    {
         $this->db->select('id, nome, img');
         $this->db->from('usuario');
-        $this->db->order_by('nome','ASC');
+        $this->db->order_by('nome', 'ASC');
         return $this->db->get()->result();
+    }
+
+    /************************************* ADMIN USUÁRIO *************************************/
+
+    public function adicionar($nome, $email, $historico, $user, $senha)
+    {
+       $dados['nome'] = $nome;
+       $dados['email'] = $email;
+       $dados['historico'] = $historico;
+       $dados['user'] = $historico;
+       $dados['senha'] = md5($senha);
+       return $this->db->insert('usuario',$dados);
+    }
+    public function excluir($id){
+        $this->db->where('md5(id)', $id);
+        return $this->db->delete('usuario');
     }
 
 }
