@@ -1544,6 +1544,50 @@ class Usuarios extends CI_Controller
 $route['admin/login'] = 'admin/usuarios/pag_login';
 ```
 
+#### 36. Configurando o login e criando uma sessão do usuário
+
+- application/controllers/admin/Usuarios.php
+```php
+
+    public function login()
+    {
+        $this->load->library('form_validation');
+        $this->form_validation->set_rules('txt-user', 'Usuário', 'required|min_length[3]');
+        $this->form_validation->set_rules('txt-senha', 'Senha', 'required|min_length[3]');
+
+        if ($this->form_validation->run() == FALSE) {
+            $this->pag_login();
+        } else {
+            $usuario = $this->input->post('txt-user');
+            $senha = $this->input->post('txt-senha');
+
+            $this->db->where('user',$usuario);
+            $this->db->where('senha',$senha);
+
+            $userlogado = $this->db->get('usuario')->result();
+            if(count($userlogado) == 1){
+                $dadosSessao['userlogado'] = $userlogado[0];
+                $dadosSessao['logado'] = TRUE;
+                $this->session->set_userdata($dadosSessao);
+                redirect(base_url('admin'));
+            print_r($userlogado);
+            return;
+            }else{
+                $dadosSessao['userlogado'] = NULL;
+                $dadosSessao['logado'] = FALSE;
+                $this->session->set_userdata($dadosSessao);
+                redirect(base_url('admin/login'));
+            }
+        }
+
+    }
+
+```
+
+- application/views/backend/home.php
+```php
+    <h2>Bem vindo ao sistema, <?php echo $this->session->userdata('userlogado')->nome; ?>!</h2>
+```
 
 
 [Voltar ao Índice](#indice)
