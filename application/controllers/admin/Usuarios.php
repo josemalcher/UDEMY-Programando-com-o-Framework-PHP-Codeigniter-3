@@ -10,7 +10,9 @@ class Usuarios extends CI_Controller
 
     public function index()
     {
-
+        if(!$this->session->userdata('logado')){
+            redirect(base_url('admin/login'));
+        }
         //Dados a serem enviados para o Cabeçalho
         $dados['titulo'] = 'Painel de Controle';
         $dados['subtitulo'] = 'Home';
@@ -46,26 +48,31 @@ class Usuarios extends CI_Controller
             $usuario = $this->input->post('txt-user');
             $senha = $this->input->post('txt-senha');
 
-            $this->db->where('user',$usuario);
-            $this->db->where('senha',$senha);
+            $this->db->where('user', $usuario);
+            $this->db->where('senha', $senha);
 
             $userlogado = $this->db->get('usuario')->result();
-            if(count($userlogado) == 1){
+            if (count($userlogado) == 1) {
                 $dadosSessao['userlogado'] = $userlogado[0];
                 $dadosSessao['logado'] = TRUE;
                 $this->session->set_userdata($dadosSessao);
                 redirect(base_url('admin'));
-            print_r($userlogado);
-            return;
-            }else{
+                print_r($userlogado);
+                return;
+            } else {
                 $dadosSessao['userlogado'] = NULL;
                 $dadosSessao['logado'] = FALSE;
                 $this->session->set_userdata($dadosSessao);
                 redirect(base_url('admin/login'));
             }
         }
-
     }
 
-
+    public function logout()
+    {
+        $dadosSessao['userlogado'] = NULL;
+        $dadosSessao['logado'] = FALSE;
+        $this->session->set_userdata($dadosSessao);
+        redirect(base_url('admin/login'));
+    }
 }

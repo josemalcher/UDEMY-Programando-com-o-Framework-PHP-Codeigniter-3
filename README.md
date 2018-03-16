@@ -1592,6 +1592,7 @@ $route['admin/login'] = 'admin/usuarios/pag_login';
 #### 37. Protegendo o acesso as páginas de administração do blog
 
 - application/controllers/admin/Home.php
+
 ```php
 public function __construct()
     {
@@ -1602,7 +1603,9 @@ public function __construct()
 
     }
 ```
+
 - application/controllers/admin/Categoria.php
+
 ```php
 public function __construct()
     {
@@ -1613,6 +1616,45 @@ public function __construct()
         $this->load->model('categorias_model', 'modelcategorias');
         $this->categorias = $this->modelcategorias->listar_categorias();
     }
+```
+
+#### 38. Criando um mecanismo de logout do nosso painel administrativo
+
+++ CORREÇÃO: application/controllers/admin/Usuarios.php
+```php
+  public function index()
+    {
+        //sem a verificação, estava dando acesso a "admin/usuarios"
+        if(!$this->session->userdata('logado')){
+            redirect(base_url('admin/login'));
+        }
+        //Dados a serem enviados para o Cabeçalho
+        $dados['titulo'] = 'Painel de Controle';
+        $dados['subtitulo'] = 'Home';
+
+        $this->load->view('backend/template/html-header', $dados);
+        $this->load->view('backend/template/template');
+        $this->load->view('backend/home');
+        $this->load->view('backend/template/html-footer');
+    }
+```
+
+- application/controllers/admin/Usuarios.php
+```php
+
+    public function logout()
+    {
+        $dadosSessao['userlogado'] = NULL;
+        $dadosSessao['logado'] = FALSE;
+        $this->session->set_userdata($dadosSessao);
+        redirect(base_url('admin/login'));
+    }
+```
+- application/views/backend/template/template.php
+```php
+                    <li>
+                        <a href="<?php echo base_url('admin/usuarios/logout') ?>"><i class="fa fa-sign-out fa-fw"></i> Sair do Sistema</a>
+                    </li>
 ```
 
 
