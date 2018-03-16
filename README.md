@@ -1589,6 +1589,32 @@ $route['admin/login'] = 'admin/usuarios/pag_login';
     <h2>Bem vindo ao sistema, <?php echo $this->session->userdata('userlogado')->nome; ?>!</h2>
 ```
 
+#### 37. Protegendo o acesso as páginas de administração do blog
+
+- application/controllers/admin/Home.php
+```php
+public function __construct()
+    {
+        parent::__construct();
+        if(!$this->session->userdata('logado')){
+            redirect(base_url('admin/login'));
+        }
+
+    }
+```
+- application/controllers/admin/Categoria.php
+```php
+public function __construct()
+    {
+        parent::__construct();
+        if(!$this->session->userdata('logado')){
+            redirect(base_url('admin/login'));
+        }
+        $this->load->model('categorias_model', 'modelcategorias');
+        $this->categorias = $this->modelcategorias->listar_categorias();
+    }
+```
+
 
 [Voltar ao Índice](#indice)
 
