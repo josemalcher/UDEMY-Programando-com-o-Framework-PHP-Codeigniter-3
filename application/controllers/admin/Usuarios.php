@@ -75,7 +75,66 @@ class Usuarios extends CI_Controller
             "HOUVE UM ERRO AO EXCLUIR USUÁRIO!";
         }
     }
-     /************************************* LOGIN *************************************/
+
+    public function alterar($id)
+    {
+        /* Proteção */
+        if (!$this->session->userdata('logado')) {
+            redirect(base_url('admin/login'));
+        }
+
+        $this->load->model('usuarios_model', 'modelusuarios');
+        $dados['usuarios'] = $this->modelusuarios->listar_usuarios($id);
+
+        //Dados a serem enviados para o Cabeçalho
+        $dados['titulo'] = 'Painel de Controle';
+        $dados['subtitulo'] = 'Alterar Usuários';
+
+        //Dados para o cabeçalho
+        $this->load->view('backend/template/html-header', $dados);
+        $this->load->view('backend/template/template');
+        $this->load->view('backend/alterar-usuario');
+        $this->load->view('backend/template/html-footer');
+    }
+
+    public function salvar_alteracoes()
+    {
+        /* Proteção */
+        if (!$this->session->userdata('logado')) {
+            redirect(base_url('admin/login'));
+        }
+
+        $this->load->model('usuarios_model', 'modelusuarios');
+        /*regras de validação*/
+        $this->load->library('form_validation');
+        $this->form_validation->set_rules('txt-usuario', 'Nome do Usuário', 'required|min_length[3]');
+        $this->form_validation->set_rules('txt-email', 'Email', 'required|valid_email');
+        $this->form_validation->set_rules('txt-historico', 'Histórico', 'required|min_length[10]');
+        //$this->form_validation->set_rules('txt-user', 'Nome de Usuário', 'required|min_length[3]|is_unique[usuario.user]');
+        $this->form_validation->set_rules('txt-user', 'Nome de Usuário', 'required|min_length[3]'); //Verificar Correção
+        $this->form_validation->set_rules('txt-senha', 'Senha', 'required|min_length[3]');
+        $this->form_validation->set_rules('txt-confir-senha', 'Senha de Confirmação', 'required|matches[txt-senha]');
+        if ($this->form_validation->run() == FALSE) {
+            //$this->output->enable_profiler(true); //  <<<<<------  DEBUG  ****----
+            $this->alterar();
+        } else {
+            $nome        = $this->input->post('txt-usuario');
+            $email       = $this->input->post('txt-email');
+            $historico   = $this->input->post('txt-historico');
+            $user        = $this->input->post('txt-user');
+            $senha       = $this->input->post('txt-senha');
+            $id          = $this->input->post('txt-id');
+            if ($this->modelusuarios->alterar($nome, $email, $historico, $user, $senha, $id)) {
+                redirect(base_url('admin/usuarios'));
+            } else {
+                "HOUVE UM ERRO AO ALTERAR CADASTRO DE USUÁRIO!";
+            }
+        }
+
+    }
+
+
+    /************************************* LOGIN *************************************/
     public function pag_login()
     {
 

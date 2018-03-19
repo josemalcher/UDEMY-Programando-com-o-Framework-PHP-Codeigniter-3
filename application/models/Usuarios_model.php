@@ -36,16 +36,40 @@ class Usuarios_model extends CI_Model
 
     public function adicionar($nome, $email, $historico, $user, $senha)
     {
-       $dados['nome'] = $nome;
-       $dados['email'] = $email;
-       $dados['historico'] = $historico;
-       $dados['user'] = $historico;
-       $dados['senha'] = md5($senha);
-       return $this->db->insert('usuario',$dados);
+        $dados['nome'] = $nome;
+        $dados['email'] = $email;
+        $dados['historico'] = $historico;
+        $dados['user'] = $user;
+        $dados['senha'] = md5($senha);
+        return $this->db->insert('usuario', $dados);
     }
-    public function excluir($id){
+
+    public function excluir($id)
+    {
         $this->db->where('md5(id)', $id);
         return $this->db->delete('usuario');
     }
+
+    /* função chamada em Alterar Usuários*/
+    public function listar_usuarios($id)
+    {
+        $this->db->select('id,nome,historico,email,user');
+        $this->db->from('usuario');
+        $this->db->where('md5(id)',$id);
+        return $this->db->get()->result();
+    }
+
+    public function alterar($nome, $email, $historico, $user, $senha,$id){
+        $dados['nome'] = $nome;
+        $dados['email'] = $email;
+        $dados['historico'] = $historico;
+        $dados['user'] = $user;
+        $dados['senha'] = md5($senha);
+        $dados['id'] = $id;
+        $this->db->where('id',$id);
+        return $this->db->update('usuario', $dados);
+    }
+
+
 
 }
