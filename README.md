@@ -2058,6 +2058,41 @@ public function __construct()
 ```
 
 
+#### 45. Exibindo as imagens dos usuários no front e backend
+
+- application/views/backend/alterar-usuario.php
+
+```php
+                        <div class="col-lg-3 col-lg-offset-3">
+                            <?php
+                            if ($usuario->img == 1) {
+                                echo img("assets/frontend/img/usuarios/" . md5($usuario->id) . ".jpg");
+                            } else {
+                                echo img("assets/frontend/img/semfoto.png");
+                            }
+                            ?>
+                        </div>
+```
+
+- application/views/frontend/sobrenos.php && application/views/frontend/autor.php
+
+```php
+                        <div class="col-md-4 col-xs-6">
+                        <?php
+                        if ($autor->img == 1) {
+                            $mostrarImg = "assets/frontend/img/usuarios/" . md5($autor->id) . ".jpg";
+                        } else {
+                            $mostrarImg = "assets/frontend/img/semFoto.png";
+                        }
+                        ?>
+                        <img class="img-responsive img-circle" src="<?php echo base_url($mostrarImg); ?>" alt="">
+```
+
+
+
+#### 46. Teste seus conhecimentos antes de ir para as próximas aulas
+
+
 [Voltar ao Índice](#indice)
 
 ---

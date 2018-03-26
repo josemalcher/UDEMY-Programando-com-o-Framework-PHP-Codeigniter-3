@@ -21,8 +21,15 @@
             <?php
             foreach ($autores as $autor) {
                 ?>
-                <div class="col-md-4">*
-                    <img class="img-responsive img-circle" src="http://placehold.it/200x200" alt="">
+                <div class="col-md-4">
+                    <?php
+                    if ($autor->img == 1) {
+                        $mostrarImg = "assets/frontend/img/usuarios/" . md5($autor->id) . ".jpg";
+                    } else {
+                        $mostrarImg = "assets/frontend/img/semFoto.png";
+                    }
+                    ?>
+                    <img class="img-responsive img-circle" src="<?php echo base_url($mostrarImg); ?>" alt="">
                 </div>
                 <div class="col-md-8 ">
                     <h2>

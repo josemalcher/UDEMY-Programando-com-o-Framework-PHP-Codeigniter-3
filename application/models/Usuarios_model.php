@@ -53,7 +53,7 @@ class Usuarios_model extends CI_Model
     /* função chamada em Alterar Usuários*/
     public function listar_usuarios($id)
     {
-        $this->db->select('id,nome,historico,email,user');
+        $this->db->select('id,nome,historico,email,user,img');
         $this->db->from('usuario');
         $this->db->where('md5(id)',$id);
         return $this->db->get()->result();

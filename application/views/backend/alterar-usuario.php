@@ -19,43 +19,45 @@
                             echo validation_errors('<div class="alert alert-danger">', '</div>');
                             echo form_open('admin/usuarios/salvar_alteracoes');
 
-                            foreach ($usuarios as $usuario) {
+                            foreach ($usuarios
 
-                                ?>
-                                <div class="form-group">
-                                    <label id="txt-usuario">Nome do Usuário</label>
-                                    <input type="text" name="txt-usuario" class="form-control"
-                                           placeholder="Digite o nome do usuário"
-                                           value="<?php echo $usuario->nome; ?>">
-                                </div>
-                                <div class="form-group">
-                                    <label id="txt-email">Email</label>
-                                    <input type="text" name="txt-email" class="form-control"
-                                           placeholder="Digite o Email"
-                                           value="<?php echo $usuario->email; ?>">
-                                </div>
-                                <div class="form-group">
-                                    <label id="txt-historico">Histórico</label>
-                                    <textarea name="txt-historico" id="txt-historico"
-                                              class="form-control"><?php echo $usuario->historico ?></textarea>
-                                </div>
-                                <div class="form-group">
-                                    <label id="txt-user">User</label>
-                                    <input type="text" name="txt-user" class="form-control"
-                                           placeholder="Digite o user do usuário"
-                                           value="<?php echo $usuario->user; ?>">
-                                </div>
-                                <div class="form-group">
-                                    <label id="txt-senha">Senha</label>
-                                    <input type="password" name="txt-senha" class="form-control">
-                                </div>
-                                <div class="form-group">
-                                    <label id="txt-confir-senha">Confirme a Senha</label>
-                                    <input type="password" name="txt-confir-senha" class="form-control">
-                                </div>
-                                <input type="hidden" name="txt-id" id="txt-id" value="<?php echo $usuario->id?>" >
-                                <button type="submit" class="btn btn-default">Salvar Alterações</button>
-                                <?php
+                            as $usuario) {
+
+                            ?>
+                            <div class="form-group">
+                                <label id="txt-usuario">Nome do Usuário</label>
+                                <input type="text" name="txt-usuario" class="form-control"
+                                       placeholder="Digite o nome do usuário"
+                                       value="<?php echo $usuario->nome; ?>">
+                            </div>
+                            <div class="form-group">
+                                <label id="txt-email">Email</label>
+                                <input type="text" name="txt-email" class="form-control"
+                                       placeholder="Digite o Email"
+                                       value="<?php echo $usuario->email; ?>">
+                            </div>
+                            <div class="form-group">
+                                <label id="txt-historico">Histórico</label>
+                                <textarea name="txt-historico" id="txt-historico"
+                                          class="form-control"><?php echo $usuario->historico ?></textarea>
+                            </div>
+                            <div class="form-group">
+                                <label id="txt-user">User</label>
+                                <input type="text" name="txt-user" class="form-control"
+                                       placeholder="Digite o user do usuário"
+                                       value="<?php echo $usuario->user; ?>">
+                            </div>
+                            <div class="form-group">
+                                <label id="txt-senha">Senha</label>
+                                <input type="password" name="txt-senha" class="form-control">
+                            </div>
+                            <div class="form-group">
+                                <label id="txt-confir-senha">Confirme a Senha</label>
+                                <input type="password" name="txt-confir-senha" class="form-control">
+                            </div>
+                            <input type="hidden" name="txt-id" id="txt-id" value="<?php echo $usuario->id ?>">
+                            <button type="submit" class="btn btn-default">Salvar Alterações</button>
+                            <?php
 
                             echo form_close();
                             ?>
@@ -75,24 +77,35 @@
                     <?php echo 'Imagem de destaque do(a) ' . $subtitulo . ' existente'; ?>
                 </div>
                 <div class="panel-body">
+                    <div class="row" style="padding: 10px;">
+                        <div class="col-lg-3 col-lg-offset-3">
+                            <?php
+                            if ($usuario->img == 1) {
+                                echo img("assets/frontend/img/usuarios/" . md5($usuario->id) . ".jpg");
+                            } else {
+                                echo img("assets/frontend/img/semfoto.png");
+                            }
+                            ?>
+                        </div>
+                    </div>
                     <div class="row">
                         <div class="col-lg-12">
-                        <?php
-                        $divopen = '<div class="form-group">';
-                        $divclose = '</div>';
-                        echo form_open_multipart('admin/usuarios/nova_foto');
-                        echo form_hidden('id', md5($usuario->id));
-                        echo $divopen;
-                        $imagem = array('name'=>'userfile', 'id'=>'userfile', 'class'=>'form-control');
-                        echo form_upload($imagem);
-                        echo $divclose;
-                        echo $divopen;
-                        $botao = array('name'=>'btn_adicionar', 'id'=>'btn_adicionar','class'=>'btn btn-default', 'value'=>'Adicionar nova imagem');
-                        echo form_submit($botao);
-                        echo $divclose;
-                        echo form_close();
-                        }
-                        ?>
+                            <?php
+                            $divopen = '<div class="form-group">';
+                            $divclose = '</div>';
+                            echo form_open_multipart('admin/usuarios/nova_foto');
+                            echo form_hidden('id', md5($usuario->id));
+                            echo $divopen;
+                            $imagem = array('name' => 'userfile', 'id' => 'userfile', 'class' => 'form-control');
+                            echo form_upload($imagem);
+                            echo $divclose;
+                            echo $divopen;
+                            $botao = array('name' => 'btn_adicionar', 'id' => 'btn_adicionar', 'class' => 'btn btn-default', 'value' => 'Adicionar nova imagem');
+                            echo form_submit($botao);
+                            echo $divclose;
+                            echo form_close();
+                            }
+                            ?>
                         </div>
 
                     </div>
