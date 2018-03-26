@@ -7,7 +7,7 @@ class Publicacoes_model extends CI_Model
     public $categoria;
     public $titulo;
     public $subtitulo;
-    public $conteuto;
+    public $conteudo;
     public $data;
     public $img;
     public $user;
@@ -60,6 +60,11 @@ class Publicacoes_model extends CI_Model
         $this->db->from('postagens');
         $this->db->where('id ='.$id);
         return $this->db->get()->result();
+    }
+
+    public function listar_publicacao(){
+        $this->db->order_by('data', 'DESC');
+        return $this->db->get('postagens')->result();
     }
 
 }
