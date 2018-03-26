@@ -118,16 +118,47 @@ class Usuarios extends CI_Controller
             //$this->output->enable_profiler(true); //  <<<<<------  DEBUG  ****----
             $this->alterar();
         } else {
-            $nome        = $this->input->post('txt-usuario');
-            $email       = $this->input->post('txt-email');
-            $historico   = $this->input->post('txt-historico');
-            $user        = $this->input->post('txt-user');
-            $senha       = $this->input->post('txt-senha');
-            $id          = $this->input->post('txt-id');
+            $nome = $this->input->post('txt-usuario');
+            $email = $this->input->post('txt-email');
+            $historico = $this->input->post('txt-historico');
+            $user = $this->input->post('txt-user');
+            $senha = $this->input->post('txt-senha');
+            $id = $this->input->post('txt-id');
             if ($this->modelusuarios->alterar($nome, $email, $historico, $user, $senha, $id)) {
                 redirect(base_url('admin/usuarios'));
             } else {
                 "HOUVE UM ERRO AO ALTERAR CADASTRO DE USUÁRIO!";
+            }
+        }
+
+    }
+
+    public function nova_foto()
+    {
+        /* Proteção */
+        if (!$this->session->userdata('logado')) {
+            redirect(base_url('admin/login'));
+        }
+        $this->load->model('usuarios_model', 'modelusuarios');
+
+        $id = $this->input->post('id');
+        $config['upload_path'] = './assets/frontend/img/usuarios';
+        $config['allowed_types'] = 'jpg';
+        $config['file_name'] = $id . ".jpg";
+        $config['overwrite'] = TRUE;
+        $this->load->library('upload', $config);
+        if (!$this->upload->do_upload()) {
+            echo $this->upload->display_errors();
+        } else {
+            $config2['source_image'] = './assets/frontend/img/usuarios/' . $id . '.jpg';
+            $config2['create_thumb'] = FALSE;
+            $config2['width'] = 200;
+            $config2['height'] = 200;
+            $this->load->library('image_lib', $config2);
+            if ($this->image_lib->resize()) {
+                redirect(base_url('admin/usuarios/alterar/' . $id));
+            } else {
+                echo $this->image_lib->display_errors();
             }
         }
 

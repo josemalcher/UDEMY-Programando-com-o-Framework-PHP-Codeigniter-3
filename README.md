@@ -2007,6 +2007,43 @@ public function __construct()
 
 ```
 
+#### 43. Realizando o upload e redimensionamento de imagens no blog
+
+- application/controllers/admin/Usuarios.php
+
+```php
+
+    public function nova_foto()
+    {
+        /* Proteção */
+        if (!$this->session->userdata('logado')) {
+            redirect(base_url('admin/login'));
+        }
+        $this->load->model('usuarios_model', 'modelusuarios');
+
+        $id = $this->input->post('id');
+        $config['upload_path'] = './assets/frontend/img/usuarios';
+        $config['allowed_types'] = 'jpg';
+        $config['file_name'] = $id . ".jpg";
+        $config['overwrite'] = TRUE;
+        $this->load->library('upload', $config);
+        if (!$this->upload->do_upload()) {
+            echo $this->upload->display_errors();
+        } else {
+            $config2['source_image'] = './assets/frontend/img/usuarios/' . $id . '.jpg';
+            $config2['create_thumb'] = FALSE;
+            $config2['width'] = 200;
+            $config2['height'] = 200;
+            $this->load->library('image_lib', $config2);
+            if ($this->image_lib->resize()) {
+                redirect(base_url('admin/usuarios/alterar/' . $id));
+            } else {
+                echo $this->image_lib->display_errors();
+            }
+        }
+
+    }
+```
 
 [Voltar ao Índice](#indice)
 
