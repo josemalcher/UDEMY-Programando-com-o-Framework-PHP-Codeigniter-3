@@ -18,11 +18,11 @@
                         <div class="col-lg-12">
                             <?php
                             echo validation_errors('<div class="alert alert-danger">', '</div>');
-                            echo form_open('admin/usuarios/inserir');
+                            echo form_open('admin/publicacao/inserir');
                             ?>
                             <div class="form-group">
                                 <label id="select-categoria">Categoria: </label>
-                                <select class="form-control">
+                                <select id="select-categoria" name="select-categoria" class="form-control">
                                     <?php foreach ($categorias as $categoria) {?>
                                     <option value="<?php echo $categoria->id ?>"><?php echo $categoria->titulo; ?></option>
                                     <?php } ?>

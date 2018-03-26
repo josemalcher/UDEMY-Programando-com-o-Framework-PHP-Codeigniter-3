@@ -2143,6 +2143,69 @@ class Publicacao extends CI_Controller
 Criação da View: application/views/backend/publicacao.php
 
 
+#### 48. Inserindo e excluindo publicações no Blog
+
+- application/controllers/admin/Publicacao.php
+
+```php
+
+    public function inserir()
+    {
+        $this->load->library('form_validation');
+        $this->form_validation->set_rules('txt-titulo', 'Título', 'required|min_length[3]');
+        $this->form_validation->set_rules('txt-subtitulo', 'SubTitulo', 'required|min_length[3]');
+        $this->form_validation->set_rules('txt-conteudo', 'Conteúdo', 'required|min_length[5]');
+        if ($this->form_validation->run() == FALSE) {
+            $this->index();
+        }else{
+            $titulo = $this->input->post('txt-titulo');
+            $subtitulo = $this->input->post('txt-subtitulo');
+            $conteudo = $this->input->post('txt-conteudo');
+            $datapub = $this->input->post('txt-data');
+            $categoria = $this->input->post('select-categoria');
+            $userpub = $this->input->post('txt-usuario');
+            if ($this->modelpublicacao->adicionar($titulo, $subtitulo, $conteudo,$datapub,$categoria,$userpub)) {
+                redirect(base_url('admin/publicacao'));
+            }else{
+                echo "HOUVE UM ERRO EM INSERIR POSTAGEM!";
+            }
+        }
+    }
+
+    public function excluir()
+    {
+        if ($this->modelpublicacao->excluir()) {
+            redirect(base_url('admin/puclicacao'));
+        } else {
+            echo "HOUVE UM ERRO AO EXCLUIR A PUBLICAÇÃO!";
+        }
+    }
+```
+
+- application/models/Publicacoes_model.php
+
+```php
+
+    public function adicionar($titulo, $subtitulo, $conteudo,$datapub,$categoria,$userpub)
+    {
+        $dados['titulo'] = $titulo;
+        $dados['subtitulo'] = $subtitulo;
+        $dados['conteudo'] = $conteudo;
+        $dados['data'] = $datapub;
+        $dados['user'] = $userpub;
+        $dados['categoria'] = $categoria;
+        return $this->db->insert('postagens', $dados);
+    }
+
+    public function excluir($id)
+    {
+        $this->db->where('md5(id)', $id);
+        return $this->db->delete('postagens');
+    }
+```
+
+
+
 [Voltar ao Índice](#indice)
 
 ---
