@@ -1919,7 +1919,6 @@ public function __construct()
 - application/controllers/admin/Usuarios.php
 
 ```php
-
     public function alterar($id)
     {
         /* Proteção */
@@ -1977,6 +1976,34 @@ public function __construct()
 
     }
 
+
+```
+
+#### 42. Criando um formulário multipart/form-data para upload de imagens
+
+- application/views/backend/alterar-usuario.php
+
+```php
+       <div class="panel-body">
+                    <div class="row">
+                        <div class="col-lg-12">
+                        <?php
+                        $divopen = '<div class="form-group">';
+                        $divclose = '</div>';
+                        echo form_open_multipart('admin/usuarios/nova_foto');
+                        echo form_hidden('id', md5($usuario->id));
+                        echo $divopen;
+                        $imagem = array('name'=>'userfile', 'id'=>'userfile', 'class'=>'form-control');
+                        echo form_upload($imagem);
+                        echo $divclose;
+                        echo $divopen;
+                        $botao = array('name'=>'btn_adicionar', 'id'=>'btn_adicionar','class'=>'btn btn-default', 'value'=>'Adicionar nova imagem');
+                        echo form_submit($botao);
+                        echo $divclose;
+                        echo form_close();
+                        }
+                        ?>
+                        </div>
 
 ```
 

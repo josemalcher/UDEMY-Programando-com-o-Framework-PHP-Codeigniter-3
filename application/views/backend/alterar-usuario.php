@@ -56,7 +56,7 @@
                                 <input type="hidden" name="txt-id" id="txt-id" value="<?php echo $usuario->id?>" >
                                 <button type="submit" class="btn btn-default">Salvar Alterações</button>
                                 <?php
-                            }
+
                             echo form_close();
                             ?>
                         </div>
@@ -77,7 +77,22 @@
                 <div class="panel-body">
                     <div class="row">
                         <div class="col-lg-12">
-
+                        <?php
+                        $divopen = '<div class="form-group">';
+                        $divclose = '</div>';
+                        echo form_open_multipart('admin/usuarios/nova_foto');
+                        echo form_hidden('id', md5($usuario->id));
+                        echo $divopen;
+                        $imagem = array('name'=>'userfile', 'id'=>'userfile', 'class'=>'form-control');
+                        echo form_upload($imagem);
+                        echo $divclose;
+                        echo $divopen;
+                        $botao = array('name'=>'btn_adicionar', 'id'=>'btn_adicionar','class'=>'btn btn-default', 'value'=>'Adicionar nova imagem');
+                        echo form_submit($botao);
+                        echo $divclose;
+                        echo form_close();
+                        }
+                        ?>
                         </div>
 
                     </div>
