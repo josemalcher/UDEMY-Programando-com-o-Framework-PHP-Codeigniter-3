@@ -2045,6 +2045,19 @@ public function __construct()
     }
 ```
 
+#### 44. Informando ao Banco de Dados que o usuário possui uma foto
+
+-
+```php
+ public function alterar_img($id)
+    {
+        $dados['img']= 1;
+        $this->db->where('md5(id)', $id);
+        return $this->db->update('usuario', $dados);
+    }
+```
+
+
 [Voltar ao Índice](#indice)
 
 ---
