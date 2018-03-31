@@ -62,9 +62,19 @@ class Publicacao extends CI_Controller
         }
     }
 
-    public function alterar()
+    public function alterar($id)
     {
+        $this->load->library('table');
+        $dados['categorias'] = $this->modelcategorias->listar_categorias();
+        $dados['publicacoes'] = $this->modelpublicacao->listar_pulicacoes($id);
+        //Dados a serem enviados para o Cabeçalho
+        $dados['ttulo'] = 'Painel de Controle';
+        $dados['subtitulo'] = 'Publicações';
 
+        $this->load->view('backend/template/html-header', $dados);
+        $this->load->view('backend/template/template');
+        $this->load->view('backend/alterar-publicacao');
+        $this->load->view('backend/template/html-footer');
     }
 
     public function salvar_alteracoes()

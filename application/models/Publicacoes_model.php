@@ -37,7 +37,7 @@ class Publicacoes_model extends CI_Model
                            postagens.categoria');
         $this->db->from('postagens');
         $this->db->join('usuario', 'usuario.id = postagens.user');
-        $this->db->where('postagens.categoria = '.$id);
+        $this->db->where('postagens.categoria = ' . $id);
         $this->db->order_by('postagens.data', 'DESC');
         return $this->db->get()->result();
     }
@@ -51,23 +51,31 @@ class Publicacoes_model extends CI_Model
                            postagens.categoria, postagens.conteudo');
         $this->db->from('postagens');
         $this->db->join('usuario', 'usuario.id = postagens.user');
-        $this->db->where('postagens.id = '.$id);
+        $this->db->where('postagens.id = ' . $id);
         return $this->db->get()->result();
     }
 
-    public function listar_titulo($id){
-        $this->db->select('id','titulo');
+    public function listar_titulo($id)
+    {
+        $this->db->select('id', 'titulo');
         $this->db->from('postagens');
-        $this->db->where('id ='.$id);
+        $this->db->where('id =' . $id);
         return $this->db->get()->result();
     }
 
-    public function listar_publicacao(){
+    public function listar_publicacao()
+    {
         $this->db->order_by('data', 'DESC');
         return $this->db->get('postagens')->result();
     }
 
-    public function adicionar($titulo, $subtitulo, $conteudo,$datapub,$categoria,$userpub)
+    public function listar_pulicacoes($id)
+    {
+        $this->db->where('md5(id)', $id);
+        return $this->db->get('postagens')->result();
+    }
+
+    public function adicionar($titulo, $subtitulo, $conteudo, $datapub, $categoria, $userpub)
     {
         $dados['titulo'] = $titulo;
         $dados['subtitulo'] = $subtitulo;
@@ -83,5 +91,6 @@ class Publicacoes_model extends CI_Model
         $this->db->where('md5(id)', $id);
         return $this->db->delete('postagens');
     }
+
 
 }

@@ -7,24 +7,26 @@
     </div>
     <!-- /.row -->
     <div class="row">
-        <div class="col-lg-12">
+        <div class="col-lg-6">
             <div class="panel panel-default">
                 <div class="panel-heading">
-                    <?php echo 'Adicionar nova ' . $subtitulo; ?>
+                    <?php echo 'Adicionar novo ' . $subtitulo; ?>
                 </div>
                 <div class="panel-body">
-
                     <div class="row">
                         <div class="col-lg-12">
                             <?php
                             echo validation_errors('<div class="alert alert-danger">', '</div>');
-                            echo form_open('admin/publicacao/inserir');
+                            echo form_open('admin/publicacao/alterar');
+                            foreach ($publicacoes
+
+                            as $publicacao){
                             ?>
                             <div class="form-group">
                                 <label id="select-categoria">Categoria: </label>
                                 <select id="select-categoria" name="select-categoria" class="form-control">
-                                    <?php foreach ($categorias as $categoria) {?>
-                                    <option value="<?php echo $categoria->id ?>"><?php echo $categoria->titulo; ?></option>
+                                    <?php foreach ($categorias as $categoria) { ?>
+                                        <option value="<?php echo $categoria->id ?>" <?php if($categoria->id == $publicacao->categoria){echo "selected";} ?> ><?php echo $categoria->titulo; ?></option>
                                     <?php } ?>
                                 </select>
                             </div>
@@ -32,28 +34,27 @@
                                 <label id="txt-titulo">Título</label>
                                 <input type="text" name="txt-titulo" class="form-control"
                                        placeholder="Digite Título"
-                                       value="<?php echo set_value('txt-titulo'); ?>">
+                                       value="<?php echo $publicacao->titulo; ?>">
                             </div>
                             <div class="form-group">
                                 <label id="txt-subtitulo">Subtítulo</label>
                                 <input type="text" name="txt-subtitulo" class="form-control" placeholder="Subtítulo"
-                                       value="<?php echo set_value('txt-subtitulo'); ?>">
+                                       value="<?php echo $publicacao->subtitulo; ?>">
                             </div>
                             <div class="form-group">
                                 <label id="txt-historico">Conteúdo</label>
                                 <textarea name="txt-conteudo" id="txt-conteudo"
-                                          class="form-control"><?php echo set_value('txt-conteudo'); ?></textarea>
+                                          class="form-control"><?php echo $publicacao->conteudo; ?></textarea>
                             </div>
                             <div class="form-group">
                                 <label id="txt-historico">Data</label>
                                 <input type="datetime-local" name="txt-data" class="form-control"
                                        placeholder="Data Publicação"
-                                       value="<?php echo set_value('txt-data'); ?>">
+                                       value="<?php echo strftime('%Y-%m-%dT%H:%M:%S', strtotime($publicacao->data)); ?>">
+
                             </div>
 
-                            <input type="hidden" name="txt-usuario" id="txt-usuario"
-                                   value="<?php echo $this->session->userdata('userlogado')->id; ?>">
-                            <button type="submit" class="btn btn-default">Cadastrar</button>
+                            <button type="submit" class="btn btn-default">Salvar Alterações</button>
                             <?php
                             echo form_close();
                             ?>
@@ -67,34 +68,40 @@
             <!-- /.panel -->
         </div>
         <!-- /.col-lg-6 -->
-        <div class="col-lg-12">
+        <div class="col-lg-6">
             <div class="panel panel-default">
                 <div class="panel-heading">
-                    <?php echo 'Alterar ' . $subtitulo . ' existente'; ?>
+                    <?php echo 'Imagem de destaque do(a) ' . $subtitulo . ' existente'; ?>
                 </div>
                 <div class="panel-body">
+                    <div class="row" style="padding: 10px;">
+                        <div class="col-lg-8 col-lg-offset-1">
+                            <?php
+                            if ($publicacao->img == 1) {
+                                echo img("assets/frontend/img/publicacao/" . md5($puclicacao->id) . ".jpg");
+                            } else {
+                                echo img("assets/frontend/img/semfoto2.png");
+                            }
+                            ?>
+                        </div>
+                    </div>
                     <div class="row">
                         <div class="col-lg-12">
-                            <style>
-                                img {
-                                    width: 50px;
-                                }
-
-                            </style>
                             <?php
-                            $this->table->set_heading("Foto", "Título", "Data", "ALterar", "Excluir");
-                            foreach ($publicacoes as $publicacao) {
-                                $titulo = $publicacao->titulo;
-                                $fotopub = "FOTO";
-                                $data = postadoem($publicacao->data);
-                                $alterar = anchor(base_url('admin/publicacao/alterar/' . md5($publicacao->id)), '<i class="fa fa-refresh fa-fw"></i> Alterar');
-                                $excluir = anchor(base_url('admin/publicacao/excluir/' . md5($publicacao->id)), '<i class="fa fa-remove fa-fw"></i> Excluir');
-                                $this->table->add_row($fotopub, $titulo, $data, $alterar, $excluir);
-                            }
-                            $this->table->set_template(array(
-                                'table_open' => '<table class="table table-striped">'
-                            ));
-                            echo $this->table->generate();
+                            $divopen = '<div class="form-group">';
+                            $divclose = '</div>';
+                            echo form_open_multipart('admin/publicacao/nova_foto');
+                            echo form_hidden('id', md5($publicacao->id));
+                            echo $divopen;
+                            $imagem = array('name' => 'userfile', 'id' => 'userfile', 'class' => 'form-control');
+                            echo form_upload($imagem);
+                            echo $divclose;
+                            echo $divopen;
+                            $botao = array('name' => 'btn_adicionar', 'id' => 'btn_adicionar', 'class' => 'btn btn-default', 'value' => 'Adicionar nova imagem');
+                            echo form_submit($botao);
+                            echo $divclose;
+                            echo form_close();
+                            } // fim foeach
                             ?>
                         </div>
 
