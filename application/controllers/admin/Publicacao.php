@@ -38,16 +38,16 @@ class Publicacao extends CI_Controller
         $this->form_validation->set_rules('txt-conteudo', 'Conteúdo', 'required|min_length[5]');
         if ($this->form_validation->run() == FALSE) {
             $this->index();
-        }else{
+        } else {
             $titulo = $this->input->post('txt-titulo');
             $subtitulo = $this->input->post('txt-subtitulo');
             $conteudo = $this->input->post('txt-conteudo');
             $datapub = $this->input->post('txt-data');
             $categoria = $this->input->post('select-categoria');
             $userpub = $this->input->post('txt-usuario');
-            if ($this->modelpublicacao->adicionar($titulo, $subtitulo, $conteudo,$datapub,$categoria,$userpub)) {
+            if ($this->modelpublicacao->adicionar($titulo, $subtitulo, $conteudo, $datapub, $categoria, $userpub)) {
                 redirect(base_url('admin/publicacao'));
-            }else{
+            } else {
                 echo "HOUVE UM ERRO EM INSERIR POSTAGEM!";
             }
         }
@@ -68,18 +68,39 @@ class Publicacao extends CI_Controller
         $dados['categorias'] = $this->modelcategorias->listar_categorias();
         $dados['publicacoes'] = $this->modelpublicacao->listar_pulicacoes($id);
         //Dados a serem enviados para o Cabeçalho
-        $dados['ttulo'] = 'Painel de Controle';
+        $dados['titulo'] = 'Painel de Controle';
         $dados['subtitulo'] = 'Publicações';
 
         $this->load->view('backend/template/html-header', $dados);
         $this->load->view('backend/template/template');
         $this->load->view('backend/alterar-publicacao');
         $this->load->view('backend/template/html-footer');
+        //$this->output->enable_profiler(true); // <<<<----- DEBUG
     }
 
     public function salvar_alteracoes()
     {
-
+        $this->load->library('form_validation');
+        $this->form_validation->set_rules('txt-titulo', 'Título', 'required|min_length[3]');
+        $this->form_validation->set_rules('txt-subtitulo', 'SubTitulo', 'required|min_length[3]');
+        $this->form_validation->set_rules('txt-conteudo', 'Conteúdo', 'required|min_length[5]');
+        if($this->form_validation->run() == FALSE){
+            $this->alterar();
+        }else{
+            $titulo = $this->input->post('txt-titulo');
+            $subtitulo = $this->input->post('txt-subtitulo');
+            $conteudo = $this->input->post('txt-conteudo');
+            $datapub = $this->input->post('txt-data');
+            $categoria = $this->input->post('select-categoria');
+            $id = $this->input->post('txt-id');
+            //$this->output->enable_profiler(true); // <<<<----- DEBUG
+            //return;
+            if ($this->modelpublicacao->alterar($titulo, $subtitulo,$conteudo,$datapub,$categoria,$id)) {
+                redirect(base_url('admin/publicacao'));
+            }else{
+                echo "HOUVE UM ERRO EM SALVAR_ALTERAÇÕES";
+            }
+        }
     }
 
 
