@@ -74,12 +74,18 @@
                 <div class="panel-heading">
                     <?php echo 'Imagem de destaque do(a) ' . $subtitulo . ' existente'; ?>
                 </div>
+                <style type="text/css">
+                    img {
+                        width: 400px;
+
+                    }
+                </style>
                 <div class="panel-body">
                     <div class="row" style="padding: 10px;">
                         <div class="col-lg-8 col-lg-offset-1">
                             <?php
                             if ($publicacao->img == 1) {
-                                echo img("assets/frontend/img/publicacao/" . md5($puclicacao->id) . ".jpg");
+                                echo img("assets/frontend/img/publicacao/" . md5($publicacao->id) . ".jpg");
                             } else {
                                 echo img("assets/frontend/img/semfoto2.png");
                             }

@@ -103,5 +103,40 @@ class Publicacao extends CI_Controller
         }
     }
 
+    public function nova_foto()
+    {
+        /* Proteção */
+        if (!$this->session->userdata('logado')) {
+            redirect(base_url('admin/login'));
+        }
+
+        $id = $this->input->post('id');
+        $config['upload_path'] = './assets/frontend/img/publicacao';
+        $config['allowed_types'] = 'jpg';
+        $config['file_name'] = $id . ".jpg";
+        $config['overwrite'] = TRUE;
+        $this->load->library('upload', $config);
+        if (!$this->upload->do_upload()) {
+            echo $this->upload->display_errors();
+        } else {
+            $config2['source_image'] = './assets/frontend/img/publicacao/' . $id . '.jpg';
+            $config2['create_thumb'] = FALSE;
+            $config2['width'] = 900;
+            $config2['height'] = 300;
+            $this->load->library('image_lib', $config2);
+            if ($this->image_lib->resize()) {
+                if ($this->modelpublicacao->alterar_img($id)) {
+                    redirect(base_url('admin/publicacao/alterar/' . $id));
+                }else{
+                    echo "HOUVE UM ERRO NO SISTEMA - Publicacao -  NOVA_FOTO";
+                }
+
+            } else {
+                echo $this->image_lib->display_errors();
+            }
+        }
+
+    }
+
 
 }
