@@ -10,6 +10,7 @@ class Usuarios extends CI_Controller
 
     public function index()
     {
+        $this->load->helper('funcoes');
         /* Proteção */
         if (!$this->session->userdata('logado')) {
             redirect(base_url('admin/login'));

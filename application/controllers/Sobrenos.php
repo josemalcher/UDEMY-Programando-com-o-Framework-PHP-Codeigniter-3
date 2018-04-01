@@ -12,6 +12,7 @@ class Sobrenos extends CI_Controller
 
     public function index()
     {
+        $this->load->helper('funcoes');
         $dados['categorias'] = $this->categorias;
         $dados['autores'] = $this->modelusuarios->listar_autores();
 
@@ -28,6 +29,7 @@ class Sobrenos extends CI_Controller
     }
     public function autores($id, $slug = null)
     {
+        $this->load->helper('funcoes');
         $dados['categorias'] = $this->categorias;
 
         $dados['autores'] = $this->modelusuarios->listar_autor($id);

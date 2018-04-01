@@ -14,6 +14,7 @@ class Categoria extends CI_Controller
 
     public function index()
     {
+        $this->load->helper('funcoes');
         $this->load->library('table');
 
         $dados['categorias'] = $this->categorias;

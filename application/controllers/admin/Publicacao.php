@@ -15,6 +15,7 @@ class Publicacao extends CI_Controller
 
     public function index()
     {
+        $this->load->helper('funcoes');
         $this->load->library('table');
 
         $dados['categorias'] = $this->categorias;
@@ -32,6 +33,7 @@ class Publicacao extends CI_Controller
 
     public function inserir()
     {
+        $this->load->helper('funcoes');
         $this->load->library('form_validation');
         $this->form_validation->set_rules('txt-titulo', 'Título', 'required|min_length[3]');
         $this->form_validation->set_rules('txt-subtitulo', 'SubTitulo', 'required|min_length[3]');

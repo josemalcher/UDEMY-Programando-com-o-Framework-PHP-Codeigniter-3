@@ -13,7 +13,7 @@ class Home extends CI_Controller
 
     public function index()
     {
-
+        $this->load->helper('funcoes');
         //Dados a serem enviados para o Cabeçalho
         $dados['titulo'] = 'Painel de Controle';
         $dados['subtitulo'] = 'Home';
