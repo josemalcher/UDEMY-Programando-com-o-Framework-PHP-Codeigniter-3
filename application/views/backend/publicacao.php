@@ -23,8 +23,8 @@
                             <div class="form-group">
                                 <label id="select-categoria">Categoria: </label>
                                 <select id="select-categoria" name="select-categoria" class="form-control">
-                                    <?php foreach ($categorias as $categoria) {?>
-                                    <option value="<?php echo $categoria->id ?>"><?php echo $categoria->titulo; ?></option>
+                                    <?php foreach ($categorias as $categoria) { ?>
+                                        <option value="<?php echo $categoria->id ?>"><?php echo $categoria->titulo; ?></option>
                                     <?php } ?>
                                 </select>
                             </div>
@@ -77,7 +77,7 @@
                         <div class="col-lg-12">
                             <style>
                                 img {
-                                    width: 50px;
+                                    width: 150px;
                                 }
 
                             </style>
@@ -85,17 +85,27 @@
                             $this->table->set_heading("Foto", "Título", "Data", "ALterar", "Excluir");
                             foreach ($publicacoes as $publicacao) {
                                 $titulo = $publicacao->titulo;
-                                $fotopub = "FOTO";
-                                $data = postadoem($publicacao->data);
-                                $alterar = anchor(base_url('admin/publicacao/alterar/' . md5($publicacao->id)), '<i class="fa fa-refresh fa-fw"></i> Alterar');
-                                $excluir = anchor(base_url('admin/publicacao/excluir/' . md5($publicacao->id)), '<i class="fa fa-remove fa-fw"></i> Excluir');
-                                $this->table->add_row($fotopub, $titulo, $data, $alterar, $excluir);
+
+                            if ($publicacao->img == 1) {
+                              $fotopub = img("assets/frontend/img/publicacao/" . md5($publicacao->id) . ".jpg");
+                            } else {
+                              $fotopub = img("assets/frontend/img/semfoto2.png");
+                            }
+
+
+                            $data = postadoem($publicacao->data);
+                            $alterar = anchor(base_url('admin/publicacao/alterar/' . md5($publicacao->id)), '<i
+                                    class="fa fa-refresh fa-fw"></i> Alterar');
+                            $excluir = anchor(base_url('admin/publicacao/excluir/' . md5($publicacao->id)), '<i
+                                    class="fa fa-remove fa-fw"></i> Excluir');
+                            $this->table->add_row($fotopub, $titulo, $data, $alterar, $excluir);
                             }
                             $this->table->set_template(array(
-                                'table_open' => '<table class="table table-striped">'
-                            ));
-                            echo $this->table->generate();
-                            ?>
+                            'table_open' => '
+                            <table class="table table-striped">'
+                                ));
+                                echo $this->table->generate();
+                                ?>
                         </div>
 
                     </div>
