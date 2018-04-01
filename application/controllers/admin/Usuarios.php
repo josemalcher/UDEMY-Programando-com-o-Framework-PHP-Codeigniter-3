@@ -97,7 +97,7 @@ class Usuarios extends CI_Controller
         $this->load->view('backend/template/html-footer');
     }
 
-    public function salvar_alteracoes($idCrip)
+    public function salvar_alteracoes($idCrip,$userCom)
     {
         /* Proteção */
         if (!$this->session->userdata('logado')) {
@@ -112,8 +112,25 @@ class Usuarios extends CI_Controller
         $this->form_validation->set_rules('txt-historico', 'Histórico', 'required|min_length[10]');
         //$this->form_validation->set_rules('txt-user', 'Nome de Usuário', 'required|min_length[3]|is_unique[usuario.user]');
         $this->form_validation->set_rules('txt-user', 'Nome de Usuário', 'required|min_length[3]'); //Verificar Correção
-        $this->form_validation->set_rules('txt-senha', 'Senha', 'required|min_length[3]');
-        $this->form_validation->set_rules('txt-confir-senha', 'Senha de Confirmação', 'required|matches[txt-senha]');
+        /*
+         *Caso deseje deixar a opção de salvar informações do usuário sem ter que digitar a senha novamente
+         * você pode mudar esta situação com uma condicional que deverá ser adicionada no Controlador e no
+         * Model, desta forma:
+         */
+        $senha= $this->input->post('txt-senha');
+        if($senha != ""){
+            $this->form_validation->set_rules('txt-senha','Senha', 'required|min_length[3]');
+            $this->form_validation->set_rules('txt-confir-senha','Confirmar Senha', 'required|matches[txt-senha]');
+        }
+        // recuperamos o que esta no campo usuário
+        $user= $this->input->post('txt-user');
+
+        // verificamos se ele é diferente do que veio inicialmente do banco e que foi passado
+        // como parâmetro na URL.
+        // Caso seja diferente ele irá verificar se é único e caso seja igual ele não fara nada
+        if($userCom != $user){
+            $this->form_validation->set_rules('txt-user','User', 'required|min_length[3]|is_unique[usuario.user]');
+        }
         if ($this->form_validation->run() == FALSE) {
             //$this->output->enable_profiler(true); //  <<<<<------  DEBUG  ****----
             $this->alterar($idCrip);

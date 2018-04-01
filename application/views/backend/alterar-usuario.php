@@ -18,7 +18,7 @@
                             <?php
                             echo validation_errors('<div class="alert alert-danger">', '</div>');
                             foreach ($usuarios as $usuario){
-                            echo form_open('admin/usuarios/salvar_alteracoes/'.md5($usuario->id));
+                            echo form_open('admin/usuarios/salvar_alteracoes/'.md5($usuario->id).'/'.$usuario->user);
 
 
 

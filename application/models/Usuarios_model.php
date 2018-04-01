@@ -65,7 +65,14 @@ class Usuarios_model extends CI_Model
         $dados['email'] = $email;
         $dados['historico'] = $historico;
         $dados['user'] = $user;
-        $dados['senha'] = md5($senha);
+        /*
+         * Edição de Usuário sem a necessidade de digitar a senha!
+         * Desta forma você verifica se foi ou não digitado a senha e caso tenha sido
+         * digitado qualquer coisa você verifica se a senha é válida:
+        */
+        if($senha != ""){
+            $dados['senha']= md5($senha);
+        }
         $dados['id'] = $id;
         $this->db->where('id',$id);
         return $this->db->update('usuario', $dados);
