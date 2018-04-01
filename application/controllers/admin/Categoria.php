@@ -69,12 +69,12 @@ class Categoria extends CI_Controller
         $this->load->view('backend/template/html-footer');
     }
 
-    public function salvar_alteracoes()
+    public function salvar_alteracoes($idCrip)
     {
         $this->load->library('form_validation'); //mesmas regras...
         $this->form_validation->set_rules('txt-categoria', 'Nome da Categoria', 'required|min_length[3]|is_unique[categoria.titulo]');
         if ($this->form_validation->run() == FALSE) {
-            $this->index();
+            $this->alterar($idCrip);
         } else {
             $titulo = $this->input->post('txt-categoria');
             $id = $this->input->post('txt-id');

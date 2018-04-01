@@ -97,7 +97,7 @@ class Usuarios extends CI_Controller
         $this->load->view('backend/template/html-footer');
     }
 
-    public function salvar_alteracoes()
+    public function salvar_alteracoes($idCrip)
     {
         /* Proteção */
         if (!$this->session->userdata('logado')) {
@@ -116,7 +116,7 @@ class Usuarios extends CI_Controller
         $this->form_validation->set_rules('txt-confir-senha', 'Senha de Confirmação', 'required|matches[txt-senha]');
         if ($this->form_validation->run() == FALSE) {
             //$this->output->enable_profiler(true); //  <<<<<------  DEBUG  ****----
-            $this->alterar();
+            $this->alterar($idCrip);
         } else {
             $nome = $this->input->post('txt-usuario');
             $email = $this->input->post('txt-email');

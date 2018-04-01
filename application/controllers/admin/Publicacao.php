@@ -78,14 +78,14 @@ class Publicacao extends CI_Controller
         //$this->output->enable_profiler(true); // <<<<----- DEBUG
     }
 
-    public function salvar_alteracoes()
+    public function salvar_alteracoes($idCrip)
     {
         $this->load->library('form_validation');
         $this->form_validation->set_rules('txt-titulo', 'Título', 'required|min_length[3]');
         $this->form_validation->set_rules('txt-subtitulo', 'SubTitulo', 'required|min_length[3]');
         $this->form_validation->set_rules('txt-conteudo', 'Conteúdo', 'required|min_length[5]');
         if($this->form_validation->run() == FALSE){
-            $this->alterar();
+            $this->alterar($idCrip);
         }else{
             $titulo = $this->input->post('txt-titulo');
             $subtitulo = $this->input->post('txt-subtitulo');

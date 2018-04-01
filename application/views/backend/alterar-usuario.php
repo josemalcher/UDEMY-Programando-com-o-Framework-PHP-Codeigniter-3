@@ -17,11 +17,10 @@
                         <div class="col-lg-12">
                             <?php
                             echo validation_errors('<div class="alert alert-danger">', '</div>');
-                            echo form_open('admin/usuarios/salvar_alteracoes');
+                            foreach ($usuarios as $usuario){
+                            echo form_open('admin/usuarios/salvar_alteracoes/'.md5($usuario->id));
 
-                            foreach ($usuarios
 
-                            as $usuario) {
 
                             ?>
                             <div class="form-group">

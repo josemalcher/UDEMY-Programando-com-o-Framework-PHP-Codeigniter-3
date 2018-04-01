@@ -17,10 +17,9 @@
                         <div class="col-lg-12">
                             <?php
                             echo validation_errors('<div class="alert alert-danger">', '</div>');
-                            echo form_open('admin/publicacao/salvar_alteracoes');
-                            foreach ($publicacoes
+                            foreach ($publicacoes as $publicacao){
+                            echo form_open('admin/publicacao/salvar_alteracoes/'.md5($publicacao->id));
 
-                            as $publicacao){
                             ?>
                             <div class="form-group">
                                 <label id="select-categoria">Categoria: </label>
