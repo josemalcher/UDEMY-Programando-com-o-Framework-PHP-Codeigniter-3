@@ -2226,6 +2226,9 @@ Criação da View: application/views/backend/publicacao.php
 
 ## <a name="parte7">Seção: 7 Conteúdo Bônus</a>
 
+#### 61. Criando um Paginador no Backend
+
+
 
 [Voltar ao Índice](#indice)
 
