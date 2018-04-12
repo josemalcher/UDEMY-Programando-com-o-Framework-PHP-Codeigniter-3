@@ -377,10 +377,10 @@ $config['encryption_key'] = '';
 | except for 'cookie_prefix' and 'cookie_httponly', which are ignored here.
 |
 */
-$config['sess_driver'] = 'database'; //files | database
+$config['sess_driver'] = 'files'; //files | database
 $config['sess_cookie_name'] = 'ci_session';
 $config['sess_expiration'] = 0;// 3600 = 1h | 0 = Sessão expira ao fechar o navegador
-$config['sess_save_path'] = 'ci_session'; //default = NULL
+$config['sess_save_path'] = APPPATH.'ci_session'; //default = NULL
 $config['sess_match_ip'] = TRUE; //grava ip de onde vem
 $config['sess_time_to_update'] = 300;
 $config['sess_regenerate_destroy'] = FALSE;
