@@ -34,7 +34,7 @@
                     <a href="<?=base_url('sobrenos')?>">Sobre Nós</a>
                 </li>
                 <li>
-                    <a href="#">Contato</a>
+                    <a href="<?=base_url('contato')?>">Contato</a>
                 </li>
             </ul>
         </div>
