@@ -28,7 +28,7 @@ class Publicacoes_model extends CI_Model
         return $this->db->get()->result();
     }
 
-    public function categoria_pub($id)
+    public function categoria_pub($id,$pular, $post_por_pagina)
     {
         $this->db->select('usuario.id as idautor, usuario.nome, 
                            postagens.id, postagens.titulo, 
@@ -39,6 +39,11 @@ class Publicacoes_model extends CI_Model
         $this->db->join('usuario', 'usuario.id = postagens.user');
         $this->db->where('postagens.categoria = ' . $id);
         $this->db->order_by('postagens.data', 'DESC');
+        if($pular && $post_por_pagina){
+            $this->db->limit($post_por_pagina,$pular);
+        }else{
+            $this->db->limit(2); // limite de publicações máximo da aplicação
+        }
         return $this->db->get()->result();
     }
 
@@ -119,6 +124,10 @@ class Publicacoes_model extends CI_Model
 
     public function contar(){
         return $this->db->count_all('postagens');
+    }
+    public function contar1($id){ // implementado em Categoria
+        $this->db->where('categoria =' . $id);
+        return $this->db->count_all_results('postagens');
     }
 
 
